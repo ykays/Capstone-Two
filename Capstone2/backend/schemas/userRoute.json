@@ -1,0 +1,40 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "properties": {
+      "username": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 30
+      },
+      "routeName": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "routeNotes": {
+        "type": "string"
+      },
+      "routeDetails": {
+        "type": "array",
+        "items": [
+          {"type": "object",
+        "properties": {
+          "waypointName": {"type": "string"},
+          "waypointLongitude": {"type": "number"},
+          "waypointLatitude": {"type": "number"}
+
+        }}
+      
+        ]
+      }
+   
+    },
+    "additionalProperties": false,
+    "required": [
+      "username",
+      "routeName",
+      "routeDetails"
+    ]
+  }
