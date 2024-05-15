@@ -15,8 +15,27 @@ const express = require("express");
 
 const ExpressError = require("../expressError");
 const Park = require("../models/park");
+const { ensureCorrectUser, ensureLoggedIn } = require("../middleware/auth");
 
 const router = new express.Router();
+
+router.get("/", async function (req, res, next) {
+  try {
+    const parks = await Park.getAllParks(req.query);
+    return res.json({ parks });
+  } catch (e) {
+    return next(e);
+  }
+});
+
+router.get("/:username", ensureLoggedIn, async function (req, res, next) {
+  try {
+    const parks = await Park.getAllParksForUser(req.params.username, req.query);
+    return res.json({ parks });
+  } catch (e) {
+    return next(e);
+  }
+});
 
 router.post("/api/post", async function (req, res, next) {
   try {
