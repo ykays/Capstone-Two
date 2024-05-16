@@ -28,11 +28,7 @@ async function commonBeforeAll() {
     `INSERT INTO parks(code, name, longitude, latitude, park_type, state)
     VALUES ('code1', 'Park Name One', -85.67330523, 37.5858662, 'National Park', 'MA'),
     ('code2', 'Park Name Two', -85.67330523, 37.5858662, 'National Reserve', 'NH'),
-    ('code3', 'Park Name Three', -85.67330523, 37.5858662, 'National Park', 'NH'),
-    ('code4', 'Park Name Four', -85.67330523, 37.5858662, 'National Park', 'MA'),
-    ('code5', 'Park Name Five', -85.67330523, 37.5858662, 'National Reserve', 'MA'),
-    ('code6', 'Park Name Six', -85.67330523, 37.5858662, 'National Park', 'NH'),
-    ('code7', 'Park Name Seven', -85.67330523, 37.5858662, 'National Park', 'MA')`
+    ('code3', 'Park Name Three', -85.67330523, 37.5858662, 'National Park', 'NH')`
   );
 
   await db.query(
@@ -44,14 +40,7 @@ async function commonBeforeAll() {
     `INSERT INTO parks_activities( park_code, activity)
     VALUES ('code1', 'Hiking'),
     ('code1', 'Biking'),
-    ('code3', 'Hiking'),
-    ('code4', 'Climbing'),
-    ('code6', 'Hiking')`
-  );
-
-  await db.query(
-    `INSERT INTO users_routes(username, route_name, route_notes)
-    VALUES ('u1', 'vacation', 'my route notes')`
+    ('code2', 'Hiking')`
   );
 }
 

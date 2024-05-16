@@ -201,6 +201,7 @@ describe("GET /routes/:username", function () {
           username: "u1",
           routeName: "route1",
           routeNotes: "maybe summer 2025",
+          createTimestamp: expect.any(String),
           details: [
             {
               seqNumber: 0,
@@ -223,6 +224,7 @@ describe("GET /routes/:username", function () {
           username: "u1",
           routeName: "route2",
           routeNotes: "maybe fall 2025",
+          createTimestamp: expect.any(String),
           details: [
             {
               seqNumber: 0,
@@ -266,6 +268,7 @@ describe("GET /routes/:username/:id", function () {
         username: "u1",
         routeName: "route1",
         routeNotes: "maybe summer 2025",
+
         routeDetails: [
           {
             waypointName: "Point1",
@@ -292,6 +295,7 @@ describe("GET /routes/:username/:id", function () {
         id: route1.body.route.id,
         routeName: "route1",
         routeNotes: "maybe summer 2025",
+        createTimestamp: expect.any(String),
         details: [
           {
             seqNumber: 0,
@@ -366,6 +370,241 @@ describe("DELETE /routes/:username/:id", function () {
     const res = await request(app)
       .delete("/routes/u1/0")
       .set("authorization", `Bearer ${u2Token}`);
+    expect(res.statusCode).toBe(401);
+  });
+});
+
+//// EDIT ROUTE
+describe("PATCH /routes/:username/:id", function () {
+  test("edit notes and waypoints", async function () {
+    const route = await request(app)
+      .post("/routes/new")
+      .send({
+        username: "u1",
+        routeName: "route1",
+        routeNotes: "maybe summer 2025",
+        routeDetails: [
+          {
+            waypointName: "Point1",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+            waypointNotes: "test city",
+          },
+          {
+            waypointName: "Point2",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+          },
+        ],
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+
+    const res = await request(app)
+      .patch(`/routes/u1/${route.body.route.id}`)
+      .send({
+        routeNotes: "summer 2025",
+        routeDetails: [
+          {
+            waypointName: "Point1Edited",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+            waypointNotes: "test city",
+          },
+          {
+            waypointName: "Point2Edited",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+          },
+        ],
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({
+      route: {
+        username: "u1",
+        id: route.body.route.id,
+        routeName: "route1",
+        routeNotes: "summer 2025",
+        createTimestamp: expect.any(String),
+        details: [
+          {
+            seqNumber: 0,
+            waypointName: "Point1Edited",
+            waypointLongitude: "42.531",
+            waypointLatitude: "-71.6",
+            waypointNotes: "test city",
+          },
+          {
+            seqNumber: 1,
+            waypointName: "Point2Edited",
+            waypointLongitude: "42.531",
+            waypointLatitude: "-71.6",
+            waypointNotes: "",
+          },
+        ],
+      },
+    });
+  });
+  test("edit notes only", async function () {
+    const route = await request(app)
+      .post("/routes/new")
+      .send({
+        username: "u1",
+        routeName: "route1",
+        routeNotes: "maybe summer 2025",
+        routeDetails: [
+          {
+            waypointName: "Point1",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+            waypointNotes: "test city",
+          },
+          {
+            waypointName: "Point2",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+          },
+        ],
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+
+    const res = await request(app)
+      .patch(`/routes/u1/${route.body.route.id}`)
+      .send({
+        routeNotes: "summer 2025",
+        routeDetails: [
+          {
+            waypointName: "Point1",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+            waypointNotes: "test city",
+          },
+          {
+            waypointName: "Point2",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+          },
+        ],
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({
+      route: {
+        username: "u1",
+        id: route.body.route.id,
+        routeName: "route1",
+        routeNotes: "summer 2025",
+        createTimestamp: expect.any(String),
+        details: [
+          {
+            seqNumber: 0,
+            waypointName: "Point1",
+            waypointLongitude: "42.531",
+            waypointLatitude: "-71.6",
+            waypointNotes: "test city",
+          },
+          {
+            seqNumber: 1,
+            waypointName: "Point2",
+            waypointLongitude: "42.531",
+            waypointLatitude: "-71.6",
+            waypointNotes: "",
+          },
+        ],
+      },
+    });
+  });
+  test("edit username -> error", async function () {
+    const route = await request(app)
+      .post("/routes/new")
+      .send({
+        username: "u1",
+        routeName: "route1",
+        routeNotes: "maybe summer 2025",
+        routeDetails: [
+          {
+            waypointName: "Point1",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+            waypointNotes: "test city",
+          },
+          {
+            waypointName: "Point2",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+          },
+        ],
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+
+    const res = await request(app)
+      .patch(`/routes/u1/${route.body.route.id}`)
+      .send({
+        username: "u2",
+        routeNotes: "summer 2025",
+        routeDetails: [
+          {
+            waypointName: "Point1",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+            waypointNotes: "test city",
+          },
+          {
+            waypointName: "Point2",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+          },
+        ],
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+
+    expect(res.statusCode).toBe(400);
+  });
+  test("unauthorized", async function () {
+    const route = await request(app)
+      .post("/routes/new")
+      .send({
+        username: "u1",
+        routeName: "route1",
+        routeNotes: "maybe summer 2025",
+        routeDetails: [
+          {
+            waypointName: "Point1",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+            waypointNotes: "test city",
+          },
+          {
+            waypointName: "Point2",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+          },
+        ],
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+
+    const res = await request(app)
+      .patch(`/routes/u1/${route.body.route.id}`)
+      .send({
+        routeNotes: "summer 2025",
+        routeDetails: [
+          {
+            waypointName: "Point1",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+            waypointNotes: "test city",
+          },
+          {
+            waypointName: "Point2",
+            waypointLongitude: 42.531,
+            waypointLatitude: -71.6,
+          },
+        ],
+      })
+      .set("authorization", `Bearer ${u2Token}`);
+
     expect(res.statusCode).toBe(401);
   });
 });

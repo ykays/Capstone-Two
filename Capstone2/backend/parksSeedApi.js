@@ -1,7 +1,6 @@
 const axios = require("axios");
 const process = require("process");
-const { PORT } = require("./config");
-const Park = require("./models/park");
+const db = require("./db");
 
 require("dotenv").config();
 
@@ -16,55 +15,117 @@ const APIKey = process.env.API_KEY;
     Note: parks_activities table needs park_code so park needs to be created first 
 */
 
-const BASE_URL = PORT || "http://localhost:3001";
-
 const url = `https://developer.nps.gov/api/v1/parks?limit=1000&api_key=${APIKey}`;
 
 async function getParks() {
   try {
     const results = await axios.get(url);
-    processResults(results.data.data);
+    await db.query(`DELETE FROM parks`);
+    console.log("All records deleted");
+    processResultsParks(results.data.data);
   } catch (e) {
     console.log(`Error fetching ${url}`, e);
-    process.exit(1);
   }
 }
 
-async function processResults(data) {
-  data.forEach(async (park) => {
-    await insertParkData(
-      park.parkCode,
-      park.fullName,
-      Number(park.longitude),
-      Number(park.latitude),
-      park.designation,
-      park.states
-    );
-    insertParkActivity(park.parkCode, park.activities);
+function processResultsParks(data) {
+  const parks = data.map((park) => {
+    const el = {
+      code: park.parkCode,
+      name: park.fullName,
+      longitude: Number(park.longitude),
+      latitude: Number(park.latitude),
+      park_type: park.designation,
+      state: park.states,
+    };
+    return el;
   });
+
+  const activities = data.map((park) => {
+    const el = {
+      code: park.parkCode,
+      activity: park.activities,
+    };
+    return el;
+  });
+
+  createQueryParks(parks, activities);
 }
 
-async function insertParkData(code, name, longitude, latitude, type, state) {
-  const data = {
-    code,
-    name,
-    longitude,
-    latitude,
-    type,
-    state,
-  };
-  //await Park.createPark(data);
+function createQueryParks(parks, activities) {
+  console.log("Creating query for Parks");
+  let query = `
+    INSERT INTO parks
+    (code, name, longitude, latitude, park_type, state)
+    VALUES`;
 
-  await axios.post(`http://localhost:3001/parks/api/post`, data);
+  let i = 1;
+  for (let j = 0; j < parks.length; j++) {
+    if (j === parks.length - 1) {
+      query += `($${i}, $${i + 1}, $${i + 2}, $${i + 3}, $${i + 4}, $${i + 5})`;
+    } else {
+      query += `($${i}, $${i + 1}, $${i + 2}, $${i + 3}, $${i + 4}, $${
+        i + 5
+      }),`;
+    }
+
+    i += 6;
+  }
+
+  let values = [];
+  for (let park of parks) {
+    for (let value of Object.values(park)) {
+      values.push(value);
+    }
+  }
+  insertParks(query, values, activities);
 }
 
-function insertParkActivity(code, activities) {
-  activities.forEach(
-    async (activity) =>
-      await axios.post(`http://localhost:3001/parks/api/activity/post`, {
-        code: code,
-        activity: activity.name,
-      })
-  );
+async function insertParks(query, values, activities) {
+  await db.query(query, values);
+  console.log("All Parks are inserted");
+  processParkActivity(activities);
 }
+
+let parkActivities = [];
+function processParkActivity(activities) {
+  for (let obj of activities) {
+    for (let activity of obj.activity) {
+      parkActivities.push({ code: obj.code, activity: activity.name });
+    }
+  }
+  createQueryParksActivities(parkActivities);
+}
+
+function createQueryParksActivities(activities) {
+  console.log("Creating query for Parks Activities");
+  let query = `
+    INSERT INTO parks_activities
+    (park_code, activity)
+    VALUES`;
+
+  let i = 1;
+  for (let j = 0; j < activities.length; j++) {
+    if (j === activities.length - 1) {
+      query += `($${i}, $${i + 1})`;
+    } else {
+      query += `($${i}, $${i + 1}),`;
+    }
+
+    i += 2;
+  }
+
+  let values = [];
+  for (let park of activities) {
+    for (let value of Object.values(park)) {
+      values.push(value);
+    }
+  }
+  insertParksActivities(query, values);
+}
+async function insertParksActivities(query, values) {
+  db.query(query, values).then(() => process.exit());
+  console.log("All Parks Activities are inserted");
+}
+
 getParks(url);

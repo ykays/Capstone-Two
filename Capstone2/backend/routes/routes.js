@@ -7,6 +7,7 @@ const express = require("express");
 const router = new express.Router();
 const { ensureCorrectUser, ensureLoggedIn } = require("../middleware/auth");
 const userRoutesSchema = require("../schemas/userRoute.json");
+const userRoutesEditSchema = require("../schemas/userRouteEdit.json");
 const { BadRequestError } = require("../expressError");
 
 router.post("/new", ensureLoggedIn, async function (req, res, next) {
@@ -58,6 +59,25 @@ router.delete(
   async function (req, res, next) {
     try {
       const route = await Route.deleteRoute(req.params.id);
+      return res.json({ route });
+    } catch (e) {
+      return next(e);
+    }
+  }
+);
+
+router.patch(
+  "/:username/:id",
+  ensureCorrectUser,
+  async function (req, res, next) {
+    try {
+      const validator = jsonschema.validate(req.body, userRoutesEditSchema);
+      if (!validator.valid) {
+        const errs = validator.errors.map((e) => e.stack);
+        throw new BadRequestError(errs);
+      }
+
+      const route = await Route.editRoute(req.params.id, req.body);
       return res.json({ route });
     } catch (e) {
       return next(e);
