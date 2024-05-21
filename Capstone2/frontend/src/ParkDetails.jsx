@@ -16,7 +16,7 @@ import CardActions from '@mui/material/CardActions';
 import axios from "axios"
 
 function ParkDetails({parkCode, handleParkDetailsClose}) {
-
+console.log(parkCode, "parkCode at the beginning")
 
 const [isLoading, setIsLoading] = useState(true)
 const [park, setPark] = useState(null)
@@ -47,6 +47,7 @@ getParkDetails(parkCode)
 
 async function getParkDetails(parkCode){
     try{
+        console.log(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}`)
         const results = await axios.get(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=6L5DF3fir451g48EkdjM9GvRnPgeoIEBYGi4DLxa`)
         setPark(results.data.data[0])
         setIsLoading(false)

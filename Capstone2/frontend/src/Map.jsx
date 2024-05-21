@@ -18,27 +18,22 @@ const Map = () => {
   const filtersActivity = useSelector((store)=> store.filters['parkActivity'], shallowEqual)
   const [isLoading, setIsLoading] = useState(true);
 
-  //////
+ 
   const [parkDetails, setParkDetails] = useState(false)
-  //const [parkCode, setParkCode] = useState(null)
-  const handleParkDetailsOpen = (e)=> {
-    console.log(e)
-    //setParkCode(code)
+  const [parkCode, setParkCode] = useState(null)
+  const handleParkDetailsOpen = (parkCode)=> {
+    setParkCode(parkCode)
     setParkDetails(true)
-    //console.log(parkCode, "parkCode in open")
+    
   }
   const handleParkDetailsClose = (e)=> {
-    //setParkCode(null)
+    setParkCode(null)
     setParkDetails(false)
-    //console.log(parkCode, "parkCode in close")
-
-    
   }
 
   const handleVisited = (e)=> {
     console.log(e)
   }
-  ////////
 
   useEffect(()=>{  
     dispatch(fetchParksFromAPI())
@@ -70,14 +65,15 @@ const Map = () => {
           >
             <Popup >
               {park.name} <br />
-              <Button onClick={handleParkDetailsOpen} 
+              <Button onClick={()=>handleParkDetailsOpen(park.code)} 
               color="secondary" variant="outlined" sx={{width:100, height:20}} >Details</Button>
-              {parkDetails && <ParkDetails parkCode={park.code} handleParkDetailsClose={handleParkDetailsClose}/>}
+             
             <Button onClick={handleVisited} 
               color="secondary" variant="outlined" sx={{width:100, height:20}} >Visited</Button>
             </Popup>
           </Marker>
         ))}
+         {parkDetails && <ParkDetails parkCode={parkCode} handleParkDetailsClose={handleParkDetailsClose}/>}
       </MapContainer>
     </div>
   );
