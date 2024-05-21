@@ -80,6 +80,39 @@ class Park {
 
     return parks;
   }
+
+  static async getParksFilterData() {
+    const res = await db.query(
+      `SELECT distinct(state) FROM parks WHERE length(state) = 2 ORDER BY state;`
+    );
+    const states = res.rows.map((state) => {
+      for (let val of Object.values(state)) {
+        return val;
+      }
+    });
+
+    const type = await db.query(
+      `SELECT distinct(park_type) FROM parks WHERE length(park_type) > 1 ORDER BY park_type; `
+    );
+
+    const parkType = type.rows.map((state) => {
+      for (let val of Object.values(state)) {
+        return val;
+      }
+    });
+
+    const activity = await db.query(
+      `SELECT distinct(activity) FROM parks_activities ORDER BY activity;`
+    );
+
+    const parkActivity = activity.rows.map((state) => {
+      for (let val of Object.values(state)) {
+        return val;
+      }
+    });
+
+    return { states, parkType, parkActivity };
+  }
 }
 
 module.exports = Park;

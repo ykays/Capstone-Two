@@ -1,9 +1,11 @@
+"use strict";
+
 function createFiltersQuery(filters) {
   let query = filters.activity
-    ? `SELECT code, name, longitude, latitude, 
-park_type as "parkType", state, activity
+    ? `SELECT DISTINCT (code), name, longitude, latitude,
+park_type as "parkType", state
 FROM parks p JOIN parks_activities a ON p.code = a.park_code`
-    : `SELECT code, name, longitude, latitude, 
+    : `SELECT code, name, longitude, latitude,
 park_type as "parkType", state
 FROM parks`;
 
