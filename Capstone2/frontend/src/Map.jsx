@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import {fetchParksFromAPI} from "./actions/parks"
+import {fetchParksFromAPI, fetchParksFromAPIForUser} from "./actions/parks"
 import {fetchFilterDataFromAPI} from "./actions/filters"
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import Filters from "./Filters";
-import {Link} from "react-router-dom"
 import Button from '@mui/material/Button';
 import ParkDetails from "./ParkDetails";
 
 
 
+
 const Map = () => {
+ 
   const dispatch = useDispatch()
+  const user = useSelector((store)=> store.user, shallowEqual)
   const parks = useSelector((store)=> store.parks, shallowEqual)
   const filtersStates = useSelector((store)=> store.filters['states'], shallowEqual)
   const filtersType = useSelector((store)=> store.filters['parkType'], shallowEqual)
@@ -35,11 +37,36 @@ const Map = () => {
     console.log(e)
   }
 
-  useEffect(()=>{  
-    dispatch(fetchParksFromAPI())
+  useEffect(()=>{
+    if(user.length !== 0) { 
+    dispatch(fetchParksFromAPIForUser(user.username)) }
+    else {
+    dispatch(fetchParksFromAPI())}
     dispatch(fetchFilterDataFromAPI())
-    setIsLoading(false)   
-  }, [dispatch])
+    setIsLoading(false)  
+     
+  }, [dispatch, user])
+
+  const greenIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+  const blueIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+  
+  
+
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -58,7 +85,9 @@ const Map = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {parks.map((park) => (
-          <Marker
+          
+          <Marker 
+           icon={park.visited ? greenIcon : blueIcon}
             key={park.code}
             position={[Number(park.latitude), Number(park.longitude)]}
             

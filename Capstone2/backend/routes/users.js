@@ -47,6 +47,15 @@ router.post("/login", async function (req, res, next) {
   }
 });
 
+router.get("/:username", ensureCorrectUser, async function (req, res, next) {
+  try {
+    const user = await User.getUserDetails(req.params.username);
+    return res.json({ user });
+  } catch (e) {
+    return next(e);
+  }
+});
+
 router.post("/visited", ensureLoggedIn, async function (req, res, next) {
   try {
     const { username, parkCode, visited } = req.body;

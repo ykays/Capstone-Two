@@ -35,9 +35,16 @@ class ParksApi {
     return res;
   }
 
+  /*Get user */
+  static async getUserDetails(username){
+    const res = await this.request(`users/${username}`)
+    console.log(res)
+    return res;
+  }
+
   /* Get all parks plus visited by the user*/
-  static async getAllParksForUser(username){
-    const res = await this.request(`parks/${username}`)
+  static async getAllParksForUser(username, filters){
+    const res = await this.request(`parks/${username}${filters}`)
     return res;
   }
 }

@@ -2,7 +2,11 @@
 
 const db = require("../db");
 const bcrypt = require("bcrypt");
-const { BadRequestError, UnauthorizedError } = require("../expressError");
+const {
+  BadRequestError,
+  UnauthorizedError,
+  NotFoundError,
+} = require("../expressError");
 const { BCRYPT_WORK_FACTOR } = require("../config");
 /* 
     User model that includes:
@@ -81,6 +85,21 @@ Login function that requires: username & password
     }
 
     throw new UnauthorizedError("Invalid username/password");
+  }
+
+  /*
+  Function to get user details
+  */
+  static async getUserDetails(username) {
+    const results = await db.query(
+      `SELECT username, email, first_name as "firstName", last_name as "lastName"
+    FROM users WHERE username =$1`,
+      [username]
+    );
+    const user = results.rows[0];
+    console.log(user);
+    if (!user) throw new NotFoundError("Username cannot be found");
+    return user;
   }
 
   /*
