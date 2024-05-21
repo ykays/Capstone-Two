@@ -158,6 +158,16 @@ Login function that requires: username & password
     const noteNew = results.rows[0];
     return noteNew;
   }
+
+  static async getNote(username, parkCode) {
+    const res = await db.query(
+      `SELECT park_notes FROM users_parks 
+      WHERE username = $1 AND park_code = $2`,
+      [username, parkCode]
+    );
+
+    return res.rows[0];
+  }
 }
 
 module.exports = User;

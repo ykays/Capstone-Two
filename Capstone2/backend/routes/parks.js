@@ -28,7 +28,9 @@ router.get("/", async function (req, res, next) {
 
 router.get("/:username", ensureLoggedIn, async function (req, res, next) {
   try {
+    console.log("in user parks");
     const parks = await Park.getAllParksForUser(req.params.username, req.query);
+    console.log(parks, "userParks");
     return res.json({ parks });
   } catch (e) {
     return next(e);

@@ -7,11 +7,11 @@ import Button from '@mui/material/Button';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import SignIn from './SignIn';
 import Register from './Register';
-import UserContext from './UserContext';
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 
 function NavBar({registerUser, logInUser, logOutUser}) {
-    const { user } = useContext(UserContext);
+    const user = useSelector((store)=> store.user, shallowEqual)
     const [login, setLogin] = useState(false);
 
     const handleLoginOpen = (e)=> {
@@ -30,7 +30,7 @@ function NavBar({registerUser, logInUser, logOutUser}) {
         setRegister(false)
     }
 
-  if(!user){
+  if(user.length === 0){
   return (
 <div>
       <AppBar position="sticky">

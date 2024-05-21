@@ -1,57 +1,34 @@
 import * as React from 'react';
-import {useState, useEffect, useCallback, useMemo} from 'react'
+import {useState, useEffect} from 'react'
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
-import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-
+import ParkNotes from './ParkNotes';
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import axios from "axios"
 
 function ParkDetails({parkCode, handleParkDetailsClose}) {
-console.log(parkCode, "parkCode at the beginning")
+
+const dispatch = useDispatch()
+const user = useSelector((store)=> store.user, shallowEqual)
 
 const [isLoading, setIsLoading] = useState(true)
 const [park, setPark] = useState(null)
 
-
-// const parkMemo = useMemo(()=> getParkDetails(parkCode), [parkCode])
-
-
-// async function getParkDetails(parkCode){
-//     const results = await axios.get(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=6L5DF3fir451g48EkdjM9GvRnPgeoIEBYGi4DLxa`)
-//     setPark(park=>results.data.data[0])
-//     setIsLoading(false)
-//     console.log(results.data)
-//     console.log(park)
-// }
-
-// const getParkDetails = useCallback(async park => {
-//     const results = await axios.get(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=6L5DF3fir451g48EkdjM9GvRnPgeoIEBYGi4DLxa`)
-//     setPark(results.data.data[0])
-//     setIsLoading(false)
-//     console.log(results.data)
-// }, [parkCode])
-
-//useEffect(() => { getParkDetails(parkCode); }, [parkCode, getParkDetails]);
 useEffect(()=>{
 getParkDetails(parkCode)
 }, [])
 
 async function getParkDetails(parkCode){
     try{
-        console.log(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}`)
         const results = await axios.get(`https://developer.nps.gov/api/v1/parks?parkCode=${parkCode}&api_key=6L5DF3fir451g48EkdjM9GvRnPgeoIEBYGi4DLxa`)
         setPark(results.data.data[0])
         setIsLoading(false)
-        console.log(results.data.data[0])
     }
     catch(e){
         console.log(e)
@@ -69,7 +46,8 @@ async function getParkDetails(parkCode){
   return (
     <div>
       <Drawer open={open} onClose={handleParkDetailsClose}>
-        <Box sx={{ width: 450 }} role="presentation" onClick={handleParkDetailsClose}>
+        <Box sx={{ width: 450 }} role="presentation" >
+          <Button variant="outlined" onClick={handleParkDetailsClose}>Close</Button>
             <Card>
                 <CardContent sx={{textAlign: 'center'}}>
                     <Typography sx={{ fontSize: 30, textAlign: 'center'}}>{park.fullName}</Typography>
@@ -81,7 +59,7 @@ async function getParkDetails(parkCode){
                 
 
             <Divider />
-            
+            {user.length!==0 && <ParkNotes user={user} parkCode={parkCode}/>}
             </CardContent>
             </Card>
          </Box>

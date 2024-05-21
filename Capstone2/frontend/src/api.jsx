@@ -38,13 +38,38 @@ class ParksApi {
   /*Get user */
   static async getUserDetails(username){
     const res = await this.request(`users/${username}`)
-    console.log(res)
     return res;
   }
 
   /* Get all parks plus visited by the user*/
   static async getAllParksForUser(username, filters){
     const res = await this.request(`parks/${username}${filters}`)
+    return res;
+  }
+
+  /*
+  Mark as visited/not visited
+  */
+  static async markVisited(username, parkCode, visited){
+    const data = {username, parkCode, visited}
+    const res = await this.request(`users/visited`, data, "post" )
+    return res;
+  }
+
+  /*
+  Save user's notes about the park
+  */
+  static async saveNote(username, parkCode, note){
+    const data = {username, parkCode, note}
+    const res = await this.request(`users/notes`, data, "post")
+    return res;
+  }
+
+    /*
+  Get user's notes about the park
+  */
+  static async getNote(username, parkCode){
+    const res = await this.request(`users/notes/${username}/${parkCode}`)
     return res;
   }
 }

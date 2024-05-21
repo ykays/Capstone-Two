@@ -4,13 +4,14 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 
-import {fetchParksFromAPI} from "./actions/parks"
+import {fetchParksFromAPI, fetchParksFromAPIForUser} from "./actions/parks"
 import {fetchFilterDataFromAPI} from "./actions/filters"
-import { useDispatch } from "react-redux";
 import {handleFilters} from "./helpers/filtersHelper.jsx"
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 function Filters({filtersStates, filtersType, filtersActivity}) {
     const dispatch = useDispatch()
+    const user = useSelector((store)=> store.user, shallowEqual)
 
     const initialState = {
         states: [],
@@ -35,10 +36,21 @@ function Filters({filtersStates, filtersType, filtersActivity}) {
         return setFilters((filters) => ({...filters, activity: filterValues}))
     }
     
-    useEffect(()=>{  
-        dispatch(fetchParksFromAPI(filters))
-        dispatch(fetchFilterDataFromAPI())   
-      }, [dispatch, filters])
+    // useEffect(()=>{  
+    //     dispatch(fetchParksFromAPI(filters))
+    //     dispatch(fetchFilterDataFromAPI())   
+    //   }, [dispatch, filters])
+
+
+      useEffect(()=>{
+        if(user || user.length !== 0) { 
+        dispatch(fetchParksFromAPIForUser(user.username, filters)) }
+        else {
+        dispatch(fetchParksFromAPI(filters))}
+
+        dispatch(fetchFilterDataFromAPI())
+              
+      }, [dispatch, filters, user, ]) 
 
   return (
     <div>

@@ -76,4 +76,20 @@ router.post("/notes", ensureLoggedIn, async function (req, res, next) {
   }
 });
 
+router.get(
+  "/notes/:username/:parkCode",
+  ensureLoggedIn,
+  async function (req, res, next) {
+    try {
+      const results = await User.getNote(
+        req.params.username,
+        req.params.parkCode
+      );
+      return res.json(results);
+    } catch (e) {
+      return next(e);
+    }
+  }
+);
+
 module.exports = router;

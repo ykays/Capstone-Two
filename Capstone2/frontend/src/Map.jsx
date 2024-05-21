@@ -7,7 +7,7 @@ import Filters from "./Filters";
 import Button from '@mui/material/Button';
 import ParkDetails from "./ParkDetails";
 
-
+import ParkApi from "./api"
 
 
 const Map = () => {
@@ -20,9 +20,10 @@ const Map = () => {
   const filtersActivity = useSelector((store)=> store.filters['parkActivity'], shallowEqual)
   const [isLoading, setIsLoading] = useState(true);
 
- 
+ // handling the parkDetails drawer
   const [parkDetails, setParkDetails] = useState(false)
   const [parkCode, setParkCode] = useState(null)
+
   const handleParkDetailsOpen = (parkCode)=> {
     setParkCode(parkCode)
     setParkDetails(true)
@@ -32,13 +33,26 @@ const Map = () => {
     setParkCode(null)
     setParkDetails(false)
   }
-
-  const handleVisited = (e)=> {
-    console.log(e)
+// handling the visited flag
+  const [visited, setVisited] = useState(null)
+  const getVisited = (val)=> {
+    setVisited(val)
   }
 
+  const handleVisited = async (parkCode)=> {
+      try{
+        const response = await ParkApi.markVisited(user.username, parkCode, !visited,)
+        dispatch(fetchParksFromAPIForUser(user.username))
+      }
+      catch(e){
+        console.log(e)
+      }
+  }
+
+// getting all parks (if user logged in also which ones the user visited)
   useEffect(()=>{
-    if(user.length !== 0) { 
+    
+    if(user || user.length !== 0) { 
     dispatch(fetchParksFromAPIForUser(user.username)) }
     else {
     dispatch(fetchParksFromAPI())}
@@ -47,6 +61,7 @@ const Map = () => {
      
   }, [dispatch, user])
 
+// styling different colors depending if the user visited park
   const greenIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -90,15 +105,17 @@ const Map = () => {
            icon={park.visited ? greenIcon : blueIcon}
             key={park.code}
             position={[Number(park.latitude), Number(park.longitude)]}
-            
+            eventHandlers={{click: (e)=> getVisited(park.visited)}}
           >
             <Popup >
               {park.name} <br />
               <Button onClick={()=>handleParkDetailsOpen(park.code)} 
               color="secondary" variant="outlined" sx={{width:100, height:20}} >Details</Button>
              
-            <Button onClick={handleVisited} 
-              color="secondary" variant="outlined" sx={{width:100, height:20}} >Visited</Button>
+            {user.length!==0 && <Button onClick={()=> handleVisited(park.code)} 
+              color="secondary" variant="outlined" sx={{width:100, height:20}} >
+                {visited ? "Unvisited": "Visited"}
+                </Button>}
             </Popup>
           </Marker>
         ))}
