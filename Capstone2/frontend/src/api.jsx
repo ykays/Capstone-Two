@@ -41,6 +41,12 @@ class ParksApi {
     return res;
   }
 
+    /* Get all parks (user not logged in) */
+    static async getAllParks( filters){
+      const res = await this.request(`parks/${filters}`)
+      return res;
+    }
+
   /* Get all parks plus visited by the user*/
   static async getAllParksForUser(username, filters){
     const res = await this.request(`parks/${username}${filters}`)

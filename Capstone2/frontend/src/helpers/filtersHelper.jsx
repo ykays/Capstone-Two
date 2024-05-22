@@ -18,13 +18,12 @@ export function handleFilters(items, e){
         const newValues = removeFromFilter(items, e)
         return newValues;
     }
-    else if(e.target.parentElement.title === 'Clear'){
-        return []
-    }
-    else {
-       
-        const newArray = [...items]
-        newArray.push(e.target.innerText)
-        return newArray
-       
-}}
+    if(e.target.parentElement.title === 'Clear') return [];
+    if(e.target.dataset.testid === "CloseIcon") return [];
+    if(e.target.title === 'Clear') return [];
+    if(e.target.parentElement.dataset.testid === 'CloseIcon') return [];
+
+    const newArray = [...items]
+    newArray.push(e.target.innerText)
+    return newArray
+}

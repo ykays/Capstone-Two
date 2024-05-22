@@ -35,7 +35,7 @@ function ParkNotes({user, parkCode}){
             return setMsg({msg: "Note has been saved", status: "success"})
         }
         catch(e){
-            return setMsg({msg: "Note has been saved", status: "error"})
+            return setMsg({msg: "Note has not been saved", status: "error"})
         }
         
 

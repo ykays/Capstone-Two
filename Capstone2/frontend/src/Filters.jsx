@@ -34,12 +34,6 @@ function Filters({filtersStates, filtersType, filtersActivity}) {
         const filterValues = handleFilters(filters.activity, e)
         return setFilters((filters) => ({...filters, activity: filterValues}))
     }
-    
-    // useEffect(()=>{  
-    //     dispatch(fetchParksFromAPI(filters))
-    //     dispatch(fetchFilterDataFromAPI())   
-    //   }, [dispatch, filters])
-
 
       useEffect(()=>{
         if(user.length !== 0) { 
