@@ -3,7 +3,6 @@ import {useState, useEffect} from "react";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-
 import {fetchParksFromAPI, fetchParksFromAPIForUser} from "./actions/parks"
 import {fetchFilterDataFromAPI} from "./actions/filters"
 import {handleFilters} from "./helpers/filtersHelper.jsx"
@@ -12,7 +11,7 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux";
 function Filters({filtersStates, filtersType, filtersActivity}) {
     const dispatch = useDispatch()
     const user = useSelector((store)=> store.user, shallowEqual)
-
+    
     const initialState = {
         states: [],
         parkType: [],
@@ -43,13 +42,12 @@ function Filters({filtersStates, filtersType, filtersActivity}) {
 
 
       useEffect(()=>{
-        if(user || user.length !== 0) { 
+        if(user.length !== 0) { 
         dispatch(fetchParksFromAPIForUser(user.username, filters)) }
         else {
         dispatch(fetchParksFromAPI(filters))}
-
         dispatch(fetchFilterDataFromAPI())
-              
+            
       }, [dispatch, filters, user, ]) 
 
   return (

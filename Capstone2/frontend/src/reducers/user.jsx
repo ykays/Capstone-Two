@@ -5,9 +5,6 @@ export default function rootReducer(state = [], action) {
         return action.user;
 
       case "REMOVE_USER":
-        console.log("in remove reducer")
-        state = action.user;
-        console.log(state)
         return action.user;
     
       default:

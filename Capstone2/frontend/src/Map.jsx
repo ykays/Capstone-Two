@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import {fetchParksFromAPI, fetchParksFromAPIForUser} from "./actions/parks"
 import {fetchFilterDataFromAPI} from "./actions/filters"
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import Filters from "./Filters";
 import Button from '@mui/material/Button';
 import ParkDetails from "./ParkDetails";
-
 import ParkApi from "./api"
 
 
@@ -49,17 +50,15 @@ const Map = () => {
       }
   }
 
-// getting all parks (if user logged in also which ones the user visited)
-  useEffect(()=>{
-    
-    if(user || user.length !== 0) { 
-    dispatch(fetchParksFromAPIForUser(user.username)) }
+
+  useEffect( ()=>{
+    if(user.length !== 0) { 
+     dispatch(fetchParksFromAPIForUser(user.username)) }
     else {
     dispatch(fetchParksFromAPI())}
     dispatch(fetchFilterDataFromAPI())
-    setIsLoading(false)  
-     
-  }, [dispatch, user])
+    if(filtersStates !== undefined) setIsLoading(false)
+  }, [dispatch, user, filtersStates])
 
 // styling different colors depending if the user visited park
   const greenIcon = new L.Icon({
@@ -83,9 +82,15 @@ const Map = () => {
   
 
 
+ 
   if (isLoading) {
-    return <p>Loading...</p>;
+     return (
+      <Box sx={{ position: 'absolute', left: '50%' , top: '50%'}}>
+        <CircularProgress />
+      </Box>
+    );
   }
+
 
   return (
     <div>
