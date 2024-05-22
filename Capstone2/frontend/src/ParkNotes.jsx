@@ -55,7 +55,7 @@ function ParkNotes({user, parkCode}){
                     id="outlined-multiline-static"
                     multiline
                     rows={10}
-                    defaultValue={noteForm}
+                    value={noteForm}
                     onChange={handleChangeNote}
                     
                     />
