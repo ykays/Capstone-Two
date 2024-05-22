@@ -66,7 +66,6 @@ const Map = () => {
   }
 
   const handleVisited = async (parkCode)=> {
-    console.log("visited button")
       try{
         setVisited(visited => visited = !visited)
         const response = await ParkApi.markVisited(user.username, parkCode, visited)
