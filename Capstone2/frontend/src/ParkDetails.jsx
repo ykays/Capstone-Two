@@ -47,7 +47,7 @@ async function getParkDetails(parkCode){
     <div>
       <Drawer open={open} onClose={handleParkDetailsClose}>
         <Box sx={{ width: 450 }} role="presentation" >
-          <Button variant="outlined" onClick={handleParkDetailsClose}>Close</Button>
+          <Button variant="outlined"  onClick={handleParkDetailsClose}>Close</Button>
             <Card>
                 <CardContent sx={{textAlign: 'center'}}>
                     <Typography sx={{ fontSize: 30, textAlign: 'center'}}>{park.fullName}</Typography>
