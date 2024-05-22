@@ -1,49 +1,15 @@
 import * as React from 'react';
-import {useState, useEffect} from "react";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import {fetchParksFromAPI, fetchParksFromAPIForUser} from "./actions/parks"
-import {fetchFilterDataFromAPI} from "./actions/filters"
-import {handleFilters} from "./helpers/filtersHelper.jsx"
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
-function Filters({filtersStates, filtersType, filtersActivity}) {
-    const dispatch = useDispatch()
-    const user = useSelector((store)=> store.user, shallowEqual)
-    
-    const initialState = {
-        states: [],
-        parkType: [],
-        activity: []
-    }
-    const [filters, setFilters] = useState(initialState)
-   
-    const handleFilterStates = (e)=> {
-        const filterValues = handleFilters(filters.states, e)
-        return setFilters((filters) => ({...filters, states: filterValues}))
-       
-    }
 
-    const handleFilterType = (e)=> {
-        const filterValues = handleFilters(filters.parkType, e)
-        return setFilters((filters) => ({...filters, parkType: filterValues}))
-    }
+function Filters({filtersStates, filtersType, filtersActivity, handleFilterStates, handleFilterType, handleFilterActivity}) {
 
-    const handleFilterActivity = (e)=> {
-        const filterValues = handleFilters(filters.activity, e)
-        return setFilters((filters) => ({...filters, activity: filterValues}))
-    }
-
-      useEffect(()=>{
-        if(user.length !== 0) { 
-        dispatch(fetchParksFromAPIForUser(user.username, filters)) }
-        else {
-        dispatch(fetchParksFromAPI(filters))}
-        dispatch(fetchFilterDataFromAPI())
-            
-      }, [dispatch, filters, user, ]) 
-
+    const handleFilterStateChange = (e)=> handleFilterStates(e)
+    const handleFilterTypeChange = (e)=> handleFilterType(e)
+    const handleFilterActivityChange = (e)=> handleFilterActivity(e)
+  
   return (
     <div>
     <Stack direction="row" spacing={3} sx={{ width: '100%' }}>
@@ -53,7 +19,7 @@ function Filters({filtersStates, filtersType, filtersActivity}) {
         size="small"
         id="tags-standard"
         options={filtersStates}
-        onChange={handleFilterStates}
+        onChange={handleFilterStateChange}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -70,7 +36,7 @@ function Filters({filtersStates, filtersType, filtersActivity}) {
         size="small"
         id="tags-standard"
         options={filtersType}
-        onChange={handleFilterType}
+        onChange={handleFilterTypeChange}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -86,7 +52,7 @@ function Filters({filtersStates, filtersType, filtersActivity}) {
         size="small"
         id="tags-standard"
         options={filtersActivity}
-        onChange={handleFilterActivity}
+        onChange={handleFilterActivityChange}
         renderInput={(params) => (
           <TextField
             {...params}

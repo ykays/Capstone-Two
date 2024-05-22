@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import {fetchParksFromAPI, fetchParksFromAPIForUser} from "./actions/parks"
 import {fetchFilterDataFromAPI} from "./actions/filters"
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import Filters from "./Filters";
 import Button from '@mui/material/Button';
 import ParkDetails from "./ParkDetails";
 import ParkApi from "./api"
+import {handleFilters} from "./helpers/filtersHelper.jsx"
 
 
 const Map = () => {
  
+  // loading data from redux
   const dispatch = useDispatch()
   const user = useSelector((store)=> store.user, shallowEqual)
   const parks = useSelector((store)=> store.parks, shallowEqual)
@@ -20,6 +22,29 @@ const Map = () => {
   const filtersType = useSelector((store)=> store.filters['parkType'], shallowEqual)
   const filtersActivity = useSelector((store)=> store.filters['parkActivity'], shallowEqual)
   const [isLoading, setIsLoading] = useState(true);
+
+  // handling the filters
+  const initialState = {
+    states: [],
+    parkType: [],
+    activity: []
+  }
+  const [filters, setFilters] = useState(initialState)
+
+  const handleFilterStates = (e)=> {
+    const filterValues = handleFilters(filters.states, e)
+    return setFilters((filters) => ({...filters, states: filterValues}))
+   
+}
+  const handleFilterType = (e)=> {
+    const filterValues = handleFilters(filters.parkType, e)
+    return setFilters((filters) => ({...filters, parkType: filterValues}))
+}
+
+  const handleFilterActivity = (e)=> {
+    const filterValues = handleFilters(filters.activity, e)
+    return setFilters((filters) => ({...filters, activity: filterValues}))
+}
 
  // handling the parkDetails drawer
   const [parkDetails, setParkDetails] = useState(false)
@@ -41,24 +66,26 @@ const Map = () => {
   }
 
   const handleVisited = async (parkCode)=> {
+    console.log("visited button")
       try{
-        const response = await ParkApi.markVisited(user.username, parkCode, !visited,)
-        dispatch(fetchParksFromAPIForUser(user.username))
+        setVisited(visited => visited = !visited)
+        const response = await ParkApi.markVisited(user.username, parkCode, visited)
+        dispatch(fetchParksFromAPIForUser(user.username, filters))
       }
       catch(e){
         console.log(e)
       }
   }
 
-
+// fetching all parks to populate the map
   useEffect( ()=>{
     if(user.length !== 0) { 
-     dispatch(fetchParksFromAPIForUser(user.username)) }
+     dispatch(fetchParksFromAPIForUser(user.username, filters)) }
     else {
-    dispatch(fetchParksFromAPI())}
+    dispatch(fetchParksFromAPI(filters))}
     dispatch(fetchFilterDataFromAPI())
     if(filtersStates !== undefined) setIsLoading(false)
-  }, [dispatch, user, filtersStates])
+  }, [dispatch, user, filtersStates, filters])
 
 // styling different colors depending if the user visited park
   const greenIcon = new L.Icon({
@@ -80,9 +107,7 @@ const Map = () => {
   });
   
   
-
-
- 
+ // rendering the Map component
   if (isLoading) {
      return (
       <Box sx={{ position: 'absolute', left: '50%' , top: '50%'}}>
@@ -94,7 +119,8 @@ const Map = () => {
 
   return (
     <div>
-      <Filters filtersStates={filtersStates} filtersType={filtersType} filtersActivity={filtersActivity}/>
+      <Filters filtersStates={filtersStates} filtersType={filtersType} filtersActivity={filtersActivity}
+      handleFilterStates={handleFilterStates} handleFilterType={handleFilterType} handleFilterActivity={handleFilterActivity} />
       <MapContainer
         center={[39.809879, -98.556732]}
         zoom={4.5}
