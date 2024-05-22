@@ -9,6 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
 
 
 
@@ -23,6 +24,7 @@ const defaultTheme = createTheme();
     lastName: ""
   }
   const [formData, setFormData] = useState(initialState)
+  const [msg, setMsg] = useState([]);
 
   const handleChange = (e)=> {
     const {name, value} = e.target;
@@ -31,9 +33,11 @@ const defaultTheme = createTheme();
 
   const handleSubmit= async (e)=> {
     e.preventDefault()
-    registerUser(formData);
+    const result = await registerUser(formData);
+    if(!result.success){
+      setMsg(result.err);
+    }
     setFormData(initialState);
-    
   }
 
   return (
@@ -55,6 +59,7 @@ const defaultTheme = createTheme();
           }}
         >
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {msg.length !== 0 && <Alert severity="error">{msg}</Alert>}
           <TextField
               margin="normal"
               required
@@ -62,9 +67,10 @@ const defaultTheme = createTheme();
               id="username"
               label="Username"
               name="username"
-              autoComplete="username"
               autoFocus
+              value={formData.username}
               onChange={handleChange}
+              
             />
               <TextField
               margin="normal"
@@ -74,6 +80,7 @@ const defaultTheme = createTheme();
               label="Password"
               type="password"
               id="password"
+              value={formData.password}
               onChange={handleChange}
             
             />
@@ -85,7 +92,7 @@ const defaultTheme = createTheme();
               id="email"
               label="Email Address"
               name="email"
-              autoComplete="email"
+              value={formData.email}
               onChange={handleChange}
             />
               <TextField
@@ -95,6 +102,7 @@ const defaultTheme = createTheme();
               name="firstName"
               label="First Name"
               id="firstName"
+              value={formData.firstName}
               onChange={handleChange}
               
             />
@@ -105,6 +113,7 @@ const defaultTheme = createTheme();
               name="lastName"
               label="Last Name"
               id="lastName"   
+              value={formData.lastName}
               onChange={handleChange}           
             />   
             <Button

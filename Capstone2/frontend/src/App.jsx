@@ -25,7 +25,7 @@ function App() {
       return { success: true };
     }
     catch(err){
-      return {success: false, err}
+      return { success: false, err };
     }
  
   }

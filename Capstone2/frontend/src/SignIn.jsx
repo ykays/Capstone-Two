@@ -9,6 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
 
 
 
@@ -21,6 +22,7 @@ const defaultTheme = createTheme();
   
   }
   const [formData, setFormData] = useState(initialState)
+  const [msg, setMsg] = useState([]);
 
   const handleChange = (e)=> {
     const {name, value} = e.target;
@@ -29,9 +31,11 @@ const defaultTheme = createTheme();
 
   const handleSubmit= async (e)=> {
     e.preventDefault()
-    logInUser(formData);
+    const result = await logInUser(formData);
+    if(!result.success){
+      setMsg(result.err);
+    }
     setFormData(initialState);
-    
   }
 
 
@@ -55,6 +59,7 @@ const defaultTheme = createTheme();
           }}
         >
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {msg.length !== 0 && <Alert severity="error">{msg}</Alert>}
             <TextField
               margin="normal"
               required
@@ -63,6 +68,7 @@ const defaultTheme = createTheme();
               label="Username"
               name="username"
               autoFocus
+              value={formData.username}
               onChange={handleChange}
             />
             <TextField
@@ -73,6 +79,7 @@ const defaultTheme = createTheme();
               label="Password"
               type="password"
               id="password"
+              value={formData.password}
               onChange={handleChange}
             />
                 
