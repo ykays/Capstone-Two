@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
 import ParkApi from "./api";
 
 function ParkNotes({ user, parkCode }) {
@@ -45,6 +46,9 @@ function ParkNotes({ user, parkCode }) {
     >
       <div>
         {msg.length !== 0 && <Alert severity={msg.status}>{msg.msg}</Alert>}
+        <Typography variant="overline" display="block" textAlign="left">
+          My Notes:
+        </Typography>
         <TextField
           id="outlined-multiline-static"
           multiline

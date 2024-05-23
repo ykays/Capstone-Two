@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
+import Alert from "@mui/material/Alert";
 import ParkNotes from "./ParkNotes";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import axios from "axios";
@@ -64,8 +65,12 @@ function ParkDetails({ parkCode, handleParkDetailsClose }) {
               </CardActions>
 
               <Divider />
-              {user.length !== 0 && (
+              {user.length !== 0 ? (
                 <ParkNotes user={user} parkCode={parkCode} />
+              ) : (
+                <Alert severity="info">
+                  Please log in or register to save a note about this park
+                </Alert>
               )}
             </CardContent>
           </Card>

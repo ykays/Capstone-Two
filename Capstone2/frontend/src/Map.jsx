@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import Tooltip from "@mui/material/Tooltip";
 import { fetchParksFromAPI, fetchParksFromAPIForUser } from "./actions/parks";
 import { fetchFilterDataFromAPI } from "./actions/filters";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -163,7 +164,7 @@ const Map = () => {
               >
                 Details
               </Button>
-              {user.length !== 0 && (
+              {user.length !== 0 ? (
                 <Button
                   onClick={() => handleVisited(park.code)}
                   color="secondary"
@@ -172,6 +173,22 @@ const Map = () => {
                 >
                   {visited ? "Unvisited" : "Visited"}
                 </Button>
+              ) : (
+                <Tooltip
+                  title="Please log in to mark this park as visited"
+                  placement="top-start"
+                >
+                  <span>
+                    <Button
+                      color="secondary"
+                      variant="outlined"
+                      sx={{ width: 100, height: 20 }}
+                      disabled
+                    >
+                      Visited
+                    </Button>
+                  </span>
+                </Tooltip>
               )}
             </Popup>
           </Marker>
