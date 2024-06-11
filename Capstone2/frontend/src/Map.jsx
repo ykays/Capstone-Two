@@ -9,8 +9,11 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import Filters from "./Filters";
 import Button from "@mui/material/Button";
 import ParkDetails from "./ParkDetails";
+import MapRouteNew from "./MapRouteNew.jsx";
 import ParkApi from "./api";
 import { handleFilters } from "./helpers/filtersHelper.jsx";
+import CreateRoute from "./CreateRoute";
+import MapMarker from "./MapMarker.jsx";
 
 const Map = () => {
   // loading data from redux
@@ -85,6 +88,10 @@ const Map = () => {
     setVisited(!visited);
   };
 
+  //handling new routes creation
+  const [newRoute, setNewRoute] = useState(false);
+  const [newRoutePoints, setNewRoutePoints] = useState([]);
+
   // fetching all parks to populate the map
   useEffect(() => {
     if (user.length !== 0) {
@@ -95,29 +102,6 @@ const Map = () => {
     dispatch(fetchFilterDataFromAPI());
     if (filtersStates !== undefined) setIsLoading(false);
   }, [dispatch, user, filtersStates, filters]);
-
-  // styling different colors depending if the user visited park
-  const greenIcon = new L.Icon({
-    iconUrl:
-      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-    shadowUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
-  });
-
-  const blueIcon = new L.Icon({
-    iconUrl:
-      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
-    shadowUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
-  });
 
   // rendering the Map component
   if (isLoading) {
@@ -130,76 +114,58 @@ const Map = () => {
 
   return (
     <div>
-      <Filters
-        filtersStates={filtersStates}
-        filtersType={filtersType}
-        filtersActivity={filtersActivity}
-        handleFilterStates={handleFilterStates}
-        handleFilterType={handleFilterType}
-        handleFilterActivity={handleFilterActivity}
+      <CreateRoute
+        setNewRoute={setNewRoute}
+        setNewRoutePoints={setNewRoutePoints}
+        newRoutePoints={newRoutePoints}
       />
-      <MapContainer
-        center={[39.809879, -98.556732]}
-        zoom={4.5}
-        scrollWheelZoom={false}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+
+      <div style={{ width: newRoute ? "83vw" : "100vw" }}>
+        <Filters
+          filtersStates={filtersStates}
+          filtersType={filtersType}
+          filtersActivity={filtersActivity}
+          handleFilterStates={handleFilterStates}
+          handleFilterType={handleFilterType}
+          handleFilterActivity={handleFilterActivity}
         />
-        {parks.map((park) => (
-          <Marker
-            icon={park.visited ? greenIcon : blueIcon}
-            key={park.code}
-            position={[Number(park.latitude), Number(park.longitude)]}
-            eventHandlers={{ click: (e) => getVisited(park.visited) }}
-          >
-            <Popup>
-              {park.name} <br />
-              <Button
-                onClick={() => handleParkDetailsOpen(park.code)}
-                color="secondary"
-                variant="outlined"
-                sx={{ width: 100, height: 20 }}
-              >
-                Details
-              </Button>
-              {user.length !== 0 ? (
-                <Button
-                  onClick={() => handleVisited(park.code)}
-                  color="secondary"
-                  variant="outlined"
-                  sx={{ width: 100, height: 20 }}
-                >
-                  {visited ? "Unvisited" : "Visited"}
-                </Button>
-              ) : (
-                <Tooltip
-                  title="Please log in to mark this park as visited"
-                  placement="top-start"
-                >
-                  <span>
-                    <Button
-                      color="secondary"
-                      variant="outlined"
-                      sx={{ width: 100, height: 20 }}
-                      disabled
-                    >
-                      Visited
-                    </Button>
-                  </span>
-                </Tooltip>
-              )}
-            </Popup>
-          </Marker>
-        ))}
-        {parkDetails && (
-          <ParkDetails
-            parkCode={parkCode}
-            handleParkDetailsClose={handleParkDetailsClose}
+
+        <MapContainer
+          center={[39.809879, -98.556732]}
+          zoom={4.5}
+          scrollWheelZoom={false}
+        >
+          {newRoute && (
+            <MapRouteNew
+              setNewRoutePoints={setNewRoutePoints}
+              newRoutePoints={newRoutePoints}
+            />
+          )}
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-        )}
-      </MapContainer>
+          {parks.map((park) => (
+            <MapMarker
+              key={park.code}
+              park={park}
+              user={user}
+              getVisited={getVisited}
+              handleParkDetailsOpen={handleParkDetailsOpen}
+              handleVisited={handleVisited}
+              newRoutePoints={newRoutePoints}
+              setNewRoutePoints={setNewRoutePoints}
+              newRoute={newRoute}
+            />
+          ))}
+          {parkDetails && (
+            <ParkDetails
+              parkCode={parkCode}
+              handleParkDetailsClose={handleParkDetailsClose}
+            />
+          )}
+        </MapContainer>
+      </div>
     </div>
   );
 };
