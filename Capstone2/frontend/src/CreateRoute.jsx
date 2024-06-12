@@ -9,6 +9,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import AddLocationIcon from "@mui/icons-material/AddLocation";
 
 const drawerWidth = 240;
 
@@ -20,7 +21,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
-function CreateRoute({ setNewRoute, newRoutePoints }) {
+function CreateRoute({ setNewRoute, setAddOnMap, newRoutePoints }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -33,6 +34,11 @@ function CreateRoute({ setNewRoute, newRoutePoints }) {
     setOpen(false);
     setNewRoute(false);
   };
+
+  /////
+
+  const [addWaypoint, setAddWaypoint] = useState(false);
+  const [waypoints, setWaypoints] = useState([]);
 
   if (open) {
     return (
@@ -60,6 +66,7 @@ function CreateRoute({ setNewRoute, newRoutePoints }) {
             </IconButton>
           </DrawerHeader>
           <Divider />
+
           <Box
             component="form"
             sx={{
@@ -82,6 +89,13 @@ function CreateRoute({ setNewRoute, newRoutePoints }) {
               <TextField id="outlined" label="Route Notes" defaultValue="" />
             </div>
             <Divider />
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => setAddOnMap(true)}
+            >
+              <AddLocationIcon></AddLocationIcon>Add Waypoint
+            </Button>
             <div>
               {newRoutePoints.map((route, indx) => (
                 <TextField

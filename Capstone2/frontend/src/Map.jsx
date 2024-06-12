@@ -90,6 +90,7 @@ const Map = () => {
 
   //handling new routes creation
   const [newRoute, setNewRoute] = useState(false);
+  const [addOnMap, setAddOnMap] = useState(false);
   const [newRoutePoints, setNewRoutePoints] = useState([]);
 
   // fetching all parks to populate the map
@@ -116,6 +117,7 @@ const Map = () => {
     <div>
       <CreateRoute
         setNewRoute={setNewRoute}
+        setAddOnMap={setAddOnMap}
         setNewRoutePoints={setNewRoutePoints}
         newRoutePoints={newRoutePoints}
       />
@@ -135,12 +137,16 @@ const Map = () => {
           zoom={4.5}
           scrollWheelZoom={false}
         >
+          {/* {addOnMap && ( */}
           {newRoute && (
             <MapRouteNew
               setNewRoutePoints={setNewRoutePoints}
               newRoutePoints={newRoutePoints}
+              setAddOnMap={setAddOnMap}
+              addOnMap={addOnMap}
             />
           )}
+
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -156,6 +162,7 @@ const Map = () => {
               newRoutePoints={newRoutePoints}
               setNewRoutePoints={setNewRoutePoints}
               newRoute={newRoute}
+              visited={visited}
             />
           ))}
           {parkDetails && (

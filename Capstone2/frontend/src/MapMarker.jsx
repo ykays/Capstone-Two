@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import Button from "@mui/material/Button";
@@ -12,6 +12,7 @@ function MapMarker({
   newRoutePoints,
   setNewRoutePoints,
   newRoute,
+  visited,
 }) {
   // styling different colors depending if the user visited park
   const greenIcon = new L.Icon({
@@ -35,6 +36,14 @@ function MapMarker({
     popupAnchor: [1, -34],
     shadowSize: [41, 41],
   });
+
+  const [parkOnRoute, setParkOnRoute] = useState([]);
+  const addParkToRoute = (latitude, longitude, name) => {
+    //console.log(MapMarker);
+
+    setNewRoutePoints([...newRoutePoints, [latitude, longitude, "park"]]);
+  };
+
   return (
     <Marker
       icon={park.visited ? greenIcon : blueIcon}
@@ -82,15 +91,14 @@ function MapMarker({
           <Button
             color="secondary"
             variant="outlined"
-            sx={{ width: 100, height: 20 }}
-            onClick={() => {
-              console.log(newRoutePoints, park, "in park adding new one");
-
-              setNewRoutePoints([
-                ...newRoutePoints,
-                [Number(park.latitude), Number(park.longitude)],
-              ]);
-            }}
+            sx={{ width: 150, height: 20 }}
+            onClick={() =>
+              addParkToRoute(
+                Number(park.latitude),
+                Number(park.longitude),
+                park.name
+              )
+            }
           >
             Add to Route
           </Button>

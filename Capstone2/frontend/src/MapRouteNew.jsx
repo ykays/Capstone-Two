@@ -4,32 +4,42 @@ import Button from "@mui/material/Button";
 import L from "leaflet";
 import { createControlComponent } from "@react-leaflet/core";
 import "leaflet-routing-machine";
-//import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { TextField } from "@mui/material";
+import { Form } from "react-router-dom";
+import MapMarker from "./MapMarker";
 
-function MapRouteNew({ setNewRoutePoints, newRoutePoints }) {
-  console.log(newRoutePoints);
-  //mark to track user's clicks on the map
-  const [mark, setMark] = useState(null);
-
-  // once user clicks onto Add button, the mark will be added to the route points
+function MapRouteNew({
+  setNewRoutePoints,
+  newRoutePoints,
+  setAddOnMap,
+  addOnMap,
+}) {
   const [points, setPoints] = useState(newRoutePoints);
+
+  useEffect(() => {
+    setPoints(newRoutePoints);
+  }, [newRoutePoints, setNewRoutePoints]);
 
   const map = useMapEvents({
     click(e) {
-      console.log(e);
-      setMark([e.latlng.lat, e.latlng.lng]);
+      addOnMap
+        ? setNewRoutePoints((points) => [
+            ...newRoutePoints,
+            [e.latlng.lat, e.latlng.lng],
+          ])
+        : null;
+      setAddOnMap(false);
     },
   });
 
-  const addToRoute = (point) => {
-    setPoints((points) => [...newRoutePoints, point]);
-    setNewRoutePoints((points) => [...newRoutePoints, point]);
+  const removePoint = (e) => {
+    console.log(e);
+    console.log(e.target.dataset.index);
+    points.splice(e.target.dataset.index, 1);
+    setNewRoutePoints((points) => [...points]);
+    setAddOnMap(false);
+    console.log(newRoutePoints, "in remove");
   };
-
-  const removePoint = (point) => {};
-
-  const cancelMark = (mark) => {};
-
   const redIcon = new L.Icon({
     iconUrl:
       "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
@@ -64,80 +74,49 @@ function MapRouteNew({ setNewRoutePoints, newRoutePoints }) {
   };
   const RoutingMachine = createControlComponent(createRoutineMachineLayer);
 
-  console.log(points, "points in routing");
-  if (points.length > 1) {
-    return (
-      <>
-        <Marker icon={redIcon} position={mark}>
-          <Popup>
-            <Button
-              color="secondary"
-              variant="outlined"
-              sx={{ width: 150, height: 20 }}
-              onClick={() => addToRoute(mark)}
-            >
-              Add to route
-            </Button>
-            <Button
-              color="primary"
-              variant="outlined"
-              sx={{ width: 100, height: 20 }}
-              onClick={() => cancelMark(mark)}
-            >
-              Cancel
-            </Button>
-          </Popup>
-        </Marker>
-        {points.map((point, indx) => (
-          <Marker icon={redIcon} position={point} key={indx}>
-            <Popup>
-              <Button
-                color="secondary"
-                variant="outlined"
-                sx={{ width: 100, height: 20 }}
-                onClick={() => removePoint(point)}
-              >
-                Remove
-              </Button>
-            </Popup>
-          </Marker>
-        ))}
-        <RoutingMachine />
-      </>
-    );
-  }
-  if (mark && points.length < 2) {
-    return (
-      <>
-        <Marker icon={redIcon} position={mark}>
-          <Popup>
-            <Button
-              color="secondary"
-              variant="outlined"
-              sx={{ width: 100, height: 20 }}
-              onClick={() => addToRoute(mark)}
-            >
-              Add to route
-            </Button>
-          </Popup>
-        </Marker>
-        {points.map((point, indx) => (
-          <Marker icon={redIcon} position={point} key={indx}>
-            <Popup>
-              <Button
-                color="secondary"
-                variant="outlined"
-                sx={{ width: 100, height: 20 }}
-                onClick={() => removePoint(point)}
-              >
-                Add to route
-              </Button>
-            </Popup>
-          </Marker>
-        ))}
-      </>
-    );
-  }
+  return (
+    <>
+      {points.map((point, indx) => {
+        console.log(point[2], "point");
+        if (point[2] === undefined) {
+          return (
+            <Marker icon={redIcon} position={point} key={indx}>
+              <Popup>
+                <Button
+                  data-index={indx}
+                  color="secondary"
+                  variant="outlined"
+                  sx={{ width: 150, height: 20 }}
+                  onClick={(e) => removePoint(e)}
+                >
+                  Remove
+                </Button>
+              </Popup>
+            </Marker>
+          );
+        }
+
+        // if (point[2] === "park") {
+        //   return (
+        //     <Marker icon={orangeIcon} position={point} key={indx}>
+        //       <Popup>
+        //         <Button
+        //           data-index={indx}
+        //           color="secondary"
+        //           variant="outlined"
+        //           sx={{ width: 150, height: 20 }}
+        //           onClick={(e) => removePoint(e)}
+        //         >
+        //           Remove
+        //         </Button>
+        //       </Popup>
+        //     </Marker>
+        //   );
+        // }
+      })}
+      {points.length > 1 && <RoutingMachine />}
+    </>
+  );
 }
 
 export default MapRouteNew;
