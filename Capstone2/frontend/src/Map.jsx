@@ -120,6 +120,7 @@ const Map = () => {
         setAddOnMap={setAddOnMap}
         setNewRoutePoints={setNewRoutePoints}
         newRoutePoints={newRoutePoints}
+        user={user}
       />
 
       <div style={{ width: newRoute ? "83vw" : "100vw" }}>

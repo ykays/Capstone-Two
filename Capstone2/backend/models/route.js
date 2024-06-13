@@ -39,8 +39,7 @@ the index of an object in array will dictate the seq_number
         indx,
         waypoint.waypointName,
         waypoint.waypointLongitude,
-        waypoint.waypointLatitude,
-        waypoint.waypointNotes
+        waypoint.waypointLatitude
       );
     });
 
@@ -49,25 +48,17 @@ the index of an object in array will dictate the seq_number
     return route;
   }
 
-  static async addRouteDetails(
-    routeId,
-    seqNum,
-    name,
-    longitude,
-    latitude,
-    notes = ""
-  ) {
+  static async addRouteDetails(routeId, seqNum, name, longitude, latitude) {
     const results = await db.query(
       `INSERT INTO routes_details
-        (route_id, seq_number, waypoint_name, waypoint_longitude, waypoint_latitude, waypoint_notes)
-        VALUES($1, $2, $3, $4, $5, $6)
+        (route_id, seq_number, waypoint_name, waypoint_longitude, waypoint_latitude)
+        VALUES($1, $2, $3, $4, $5)
         RETURNING id, route_id as "routeId", seq_number as "seqNumber", 
         waypoint_name as "waypointName", 
         waypoint_longitude as "waypointLongitude", 
-        waypoint_latitude as "waypointLatitude", 
-        waypoint_notes as "waypointNotes"
+        waypoint_latitude as "waypointLatitude"
         `,
-      [routeId, seqNum, name, longitude, latitude, notes]
+      [routeId, seqNum, name, longitude, latitude]
     );
     const routeDetails = results.rows[0];
 
@@ -99,8 +90,7 @@ the index of an object in array will dictate the seq_number
         seq_number as "seqNumber",
         waypoint_name as "waypointName",
         waypoint_longitude as "waypointLongitude",
-        waypoint_latitude as "waypointLatitude",
-        waypoint_notes as "waypointNotes"
+        waypoint_latitude as "waypointLatitude"
         FROM routes_details
         WHERE route_id = $1`,
         [route.id]
@@ -133,8 +123,7 @@ the index of an object in array will dictate the seq_number
       seq_number as "seqNumber", 
       waypoint_name as "waypointName", 
       waypoint_longitude as "waypointLongitude", 
-      waypoint_latitude as "waypointLatitude", 
-      waypoint_notes as "waypointNotes"
+      waypoint_latitude as "waypointLatitude"
       FROM routes_details 
       WHERE route_id = $1`,
       [routeId]
@@ -211,8 +200,7 @@ the index of an object in array will dictate the seq_number
         indx,
         waypoint.waypointName,
         waypoint.waypointLongitude,
-        waypoint.waypointLatitude,
-        waypoint.waypointNotes
+        waypoint.waypointLatitude
       );
     });
     //getting the details of the changed route to return at the end as part of route

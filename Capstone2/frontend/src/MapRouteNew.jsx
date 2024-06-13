@@ -4,9 +4,6 @@ import Button from "@mui/material/Button";
 import L from "leaflet";
 import { createControlComponent } from "@react-leaflet/core";
 import "leaflet-routing-machine";
-import { TextField } from "@mui/material";
-import { Form } from "react-router-dom";
-import MapMarker from "./MapMarker";
 
 function MapRouteNew({
   setNewRoutePoints,
@@ -14,12 +11,15 @@ function MapRouteNew({
   setAddOnMap,
   addOnMap,
 }) {
+  // get all waypoints that should be display on the map
   const [points, setPoints] = useState(newRoutePoints);
 
+  // if the points have changed, the component needs to be re-rendered
   useEffect(() => {
     setPoints(newRoutePoints);
   }, [newRoutePoints, setNewRoutePoints]);
 
+  // if the user clicked on Add a Waypoint button, allow user to click and add waypoint
   const map = useMapEvents({
     click(e) {
       addOnMap
@@ -32,14 +32,14 @@ function MapRouteNew({
     },
   });
 
+  // removing waypoint from the array and map, disable clicking/adding point to the map (until user click on Add a waypoint button)
   const removePoint = (e) => {
-    console.log(e);
-    console.log(e.target.dataset.index);
     points.splice(e.target.dataset.index, 1);
     setNewRoutePoints((points) => [...points]);
     setAddOnMap(false);
-    console.log(newRoutePoints, "in remove");
   };
+
+  //styling the icon of a waypoint
   const redIcon = new L.Icon({
     iconUrl:
       "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
@@ -51,6 +51,7 @@ function MapRouteNew({
     shadowSize: [41, 41],
   });
 
+  // creating a route to be displayed on the map
   const createRoutineMachineLayer = () => {
     if (Object.keys(points).length === 0) return;
 
@@ -77,8 +78,7 @@ function MapRouteNew({
   return (
     <>
       {points.map((point, indx) => {
-        console.log(point[2], "point");
-        if (point[2] === undefined) {
+        if (point[3] === undefined) {
           return (
             <Marker icon={redIcon} position={point} key={indx}>
               <Popup>
@@ -95,24 +95,6 @@ function MapRouteNew({
             </Marker>
           );
         }
-
-        // if (point[2] === "park") {
-        //   return (
-        //     <Marker icon={orangeIcon} position={point} key={indx}>
-        //       <Popup>
-        //         <Button
-        //           data-index={indx}
-        //           color="secondary"
-        //           variant="outlined"
-        //           sx={{ width: 150, height: 20 }}
-        //           onClick={(e) => removePoint(e)}
-        //         >
-        //           Remove
-        //         </Button>
-        //       </Popup>
-        //     </Marker>
-        //   );
-        // }
       })}
       {points.length > 1 && <RoutingMachine />}
     </>

@@ -44,9 +44,8 @@ CREATE TABLE routes_details (
     id SERIAL PRIMARY KEY,
     route_id INTEGER NOT NULL REFERENCES users_routes ON DELETE CASCADE,
     seq_number INTEGER NOT NULL,
-    waypoint_name VARCHAR(25) NOT NULL,
+    waypoint_name TEXT NOT NULL,
     waypoint_longitude NUMERIC NOT NULL,
-    waypoint_latitude NUMERIC NOT NULL,
-    waypoint_notes TEXT
+    waypoint_latitude NUMERIC NOT NULL
 );
 
