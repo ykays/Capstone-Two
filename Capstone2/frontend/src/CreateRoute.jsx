@@ -14,6 +14,9 @@ import AddLocationIcon from "@mui/icons-material/AddLocation";
 import ParkApi from "./api";
 import Tooltip from "@mui/material/Tooltip";
 import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
+import { routeReorder } from "./helpers/routeHelper";
+import CreateRouteList from "./CreateRouteList";
 
 const drawerWidth = 240;
 
@@ -67,9 +70,9 @@ function CreateRoute({
       e.target.parentElement.parentElement[0].value = "";
       e.target.parentElement.parentElement[2].value = "";
       setNewRoutePoints([]);
-      return setMsg({ msg: "Route has been saved", status: "success" });
+      return setMsg({ msg: "Route saved", status: "success" });
     } catch (e) {
-      return setMsg({ msg: `Route has not been saved ${e}`, status: "error" });
+      return setMsg({ msg: `Route not saved ${e}`, status: "error" });
     }
   };
 
@@ -78,6 +81,19 @@ function CreateRoute({
     e.target.parentElement.parentElement[2].value = "";
     setNewRoutePoints([]);
     setMsg([]);
+  };
+
+  const onDragEnd = ({ destination, source }) => {
+    // dropped outside the list
+    if (!destination) return;
+
+    const newItems = routeReorder(
+      newRoutePoints,
+      source.index,
+      destination.index
+    );
+
+    setNewRoutePoints(newItems);
   };
 
   if (open) {
@@ -116,7 +132,16 @@ function CreateRoute({
             display="flex"
             flexDirection="column"
           >
-            {msg.length !== 0 && <Alert severity={msg.status}>{msg.msg}</Alert>}
+            {msg.length !== 0 && (
+              <Alert
+                severity={msg.status}
+                onClose={() => {
+                  setMsg([]);
+                }}
+              >
+                {msg.msg}
+              </Alert>
+            )}
             <div>
               <TextField
                 required
@@ -135,6 +160,10 @@ function CreateRoute({
               />
             </div>
             <Divider />
+            <Typography style={{ fontSize: "0.6rem" }}>
+              To add a Waypoint, click on 'Add Waypoint' and then either click
+              on a map or select a park & add to route
+            </Typography>
             <Button
               size="small"
               width="10vw"
@@ -144,35 +173,10 @@ function CreateRoute({
             >
               <AddLocationIcon></AddLocationIcon>Add Waypoint
             </Button>
-            <div>
-              {newRoutePoints.map((route, indx) => {
-                if (!route[2]) {
-                  return (
-                    <TextField
-                      key={indx}
-                      required
-                      id="outlined-required"
-                      label="Waypoint"
-                      size="small"
-                      onChange={(e) => {
-                        route[2] = e.target.value;
-                      }}
-                    />
-                  );
-                }
-
-                return (
-                  <TextField
-                    key={indx}
-                    disabled
-                    id="outlined-disabled"
-                    label="Waypoint"
-                    value={route[2]}
-                    size="small"
-                  />
-                );
-              })}
-            </div>
+            <CreateRouteList
+              onDragEnd={onDragEnd}
+              newRoutePoints={newRoutePoints}
+            />
             {newRoutePoints.length > 1 && (
               <ButtonGroup size="small" aria-label="Small button group">
                 {user.length !== 0 ? (
