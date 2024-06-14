@@ -51,8 +51,11 @@ function CreateRoute({
   const [msg, setMsg] = useState([]);
 
   const handleSaveRoute = async (e) => {
-    const routeName = e.target.parentElement.parentElement[0].value;
-    const routeNotes = e.target.parentElement.parentElement[2].value;
+    e.preventDefault();
+
+    const routeName = e.target[0].value;
+    const routeNotes = e.target[2].value;
+
     const routeDetails = newRoutePoints.map((point) => {
       return {
         waypointName: point[2],
@@ -60,6 +63,7 @@ function CreateRoute({
         waypointLatitude: point[0],
       };
     });
+
     try {
       const result = await ParkApi.createNewRoute(
         user.username,
@@ -67,8 +71,8 @@ function CreateRoute({
         routeNotes,
         routeDetails
       );
-      e.target.parentElement.parentElement[0].value = "";
-      e.target.parentElement.parentElement[2].value = "";
+      e.target[0].value = "";
+      e.target[2].value = "";
       setNewRoutePoints([]);
       return setMsg({ msg: "Route saved", status: "success" });
     } catch (e) {
@@ -77,14 +81,13 @@ function CreateRoute({
   };
 
   const handleCancelRoute = (e) => {
-    e.target.parentElement.parentElement[0].value = "";
-    e.target.parentElement.parentElement[2].value = "";
+    e.target[0].value = "";
+    e.target[2].value = "";
     setNewRoutePoints([]);
     setMsg([]);
   };
 
   const onDragEnd = ({ destination, source }) => {
-    // dropped outside the list
     if (!destination) return;
 
     const newItems = routeReorder(
@@ -131,6 +134,9 @@ function CreateRoute({
             autoComplete="off"
             display="flex"
             flexDirection="column"
+            onSubmit={(e) => {
+              handleSaveRoute(e);
+            }}
           >
             {msg.length !== 0 && (
               <Alert
@@ -142,23 +148,24 @@ function CreateRoute({
                 {msg.msg}
               </Alert>
             )}
-            <div>
-              <TextField
-                required
-                id="outlined-required"
-                label="Name"
-                size="small"
-                name="routeName"
-              />
-            </div>
-            <div>
-              <TextField
-                id="outlined"
-                label="Route Notes"
-                size="small"
-                name="routeNotes"
-              />
-            </div>
+
+            <TextField
+              className="required"
+              required
+              id="outlined-required"
+              label="Name"
+              size="small"
+              name="routeName"
+              inputProps={{ required: true }}
+            />
+
+            <TextField
+              id="outlined"
+              label="Route Notes"
+              size="small"
+              name="routeNotes"
+            />
+
             <Divider />
             <Typography style={{ fontSize: "0.6rem" }}>
               To add a Waypoint, click on 'Add Waypoint' and then either click
@@ -180,12 +187,7 @@ function CreateRoute({
             {newRoutePoints.length > 1 && (
               <ButtonGroup size="small" aria-label="Small button group">
                 {user.length !== 0 ? (
-                  <Button
-                    variant="contained"
-                    onClick={(e) => {
-                      handleSaveRoute(e);
-                    }}
-                  >
+                  <Button type="submit" variant="contained">
                     Save Route
                   </Button>
                 ) : (

@@ -97,7 +97,6 @@ Login function that requires: username & password
       [username]
     );
     const user = results.rows[0];
-    console.log(user);
     if (!user) throw new NotFoundError("Username cannot be found");
     return user;
   }

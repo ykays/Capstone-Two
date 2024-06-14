@@ -49,12 +49,7 @@ function SignIn({ open, onClose, logInUser }) {
                   alignItems: "center",
                 }}
               >
-                <Box
-                  component="form"
-                  onSubmit={handleSubmit}
-                  noValidate
-                  sx={{ mt: 1 }}
-                >
+                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                   {msg.length !== 0 && <Alert severity="error">{msg}</Alert>}
                   <TextField
                     margin="normal"
