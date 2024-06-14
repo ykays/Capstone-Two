@@ -18,7 +18,7 @@ function Filters({
   return (
     <Stack direction="row" spacing={3} sx={{ width: "90%" }}>
       <Autocomplete
-        sx={{ display: "inline-flex", width: "65%" }}
+        sx={{ display: "inline-flex", width: "100%" }}
         multiple
         size="small"
         id="tags-standard"
@@ -35,7 +35,7 @@ function Filters({
       />
 
       <Autocomplete
-        sx={{ display: "inline-flex", width: "65%" }}
+        sx={{ display: "inline-flex", width: "100%" }}
         multiple
         size="small"
         id="tags-standard"
@@ -51,7 +51,7 @@ function Filters({
         )}
       />
       <Autocomplete
-        sx={{ display: "inline-flex", width: "65%" }}
+        sx={{ display: "inline-flex", width: "100%" }}
         multiple
         size="small"
         id="tags-standard"

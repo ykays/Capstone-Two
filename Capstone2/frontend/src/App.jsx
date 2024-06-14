@@ -49,15 +49,17 @@ function App() {
     dispatch(fetchUserDetailsFromAPI(decoded.username));
   }, [token]);
 
+  const [newRoute, setNewRoute] = useState(false);
+
   return (
-    <>
+    <div style={{ width: newRoute ? "83vw" : "100vw" }}>
       <NavBar
         registerUser={registerUser}
         logInUser={logInUser}
         logOutUser={logOutUser}
       />
-      <Map />
-    </>
+      <Map newRoute={newRoute} setNewRoute={setNewRoute} />
+    </div>
   );
 }
 

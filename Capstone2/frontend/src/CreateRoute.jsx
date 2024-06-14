@@ -17,6 +17,7 @@ import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import { routeReorder } from "./helpers/routeHelper";
 import CreateRouteList from "./CreateRouteList";
+import Stack from "@mui/material/Stack";
 
 const drawerWidth = 240;
 
@@ -101,125 +102,141 @@ function CreateRoute({
 
   if (open) {
     return (
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-            },
-          }}
-          variant="persistent"
-          anchor="right"
-          open={open}
-        >
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
-            </IconButton>
-          </DrawerHeader>
-          <Divider />
-
-          <Box
-            component="form"
+      <>
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          <Drawer
             sx={{
-              "& .MuiTextField-root": { m: 0.5, width: "25ch" },
+              width: drawerWidth,
+              flexShrink: 0,
+              "& .MuiDrawer-paper": {
+                width: drawerWidth,
+              },
             }}
-            autoComplete="off"
-            display="flex"
-            flexDirection="column"
-            onSubmit={(e) => {
-              handleSaveRoute(e);
-            }}
+            variant="persistent"
+            anchor="right"
+            open={open}
           >
-            {msg.length !== 0 && (
-              <Alert
-                severity={msg.status}
-                onClose={() => {
-                  setMsg([]);
-                }}
-              >
-                {msg.msg}
-              </Alert>
-            )}
-
-            <TextField
-              className="required"
-              required
-              id="outlined-required"
-              label="Name"
-              size="small"
-              name="routeName"
-              inputProps={{ required: true }}
-            />
-
-            <TextField
-              id="outlined"
-              label="Route Notes"
-              size="small"
-              name="routeNotes"
-            />
-
-            <Divider />
-            <Typography style={{ fontSize: "0.6rem" }}>
-              To add a Waypoint, click on 'Add Waypoint' and then either click
-              on a map or select a park & add to route
-            </Typography>
-            <Button
-              size="small"
-              width="10vw"
-              color="primary"
-              variant="outlined"
-              onClick={() => setAddOnMap(true)}
-            >
-              <AddLocationIcon></AddLocationIcon>Add Waypoint
-            </Button>
-            <CreateRouteList
-              onDragEnd={onDragEnd}
-              newRoutePoints={newRoutePoints}
-            />
-            {newRoutePoints.length > 1 && (
-              <ButtonGroup size="small" aria-label="Small button group">
-                {user.length !== 0 ? (
-                  <Button type="submit" variant="contained">
-                    Save Route
-                  </Button>
+            <DrawerHeader>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === "rtl" ? (
+                  <ChevronLeftIcon />
                 ) : (
-                  <Tooltip
-                    title="Please log in to save the route"
-                    placement="top-start"
-                  >
-                    <span>
-                      <Button variant="contained" disabled>
-                        Save Route
-                      </Button>
-                    </span>
-                  </Tooltip>
+                  <ChevronRightIcon />
                 )}
-                <Button
-                  variant="outlined"
-                  onClick={(e) => handleCancelRoute(e)}
+              </IconButton>
+            </DrawerHeader>
+            <Divider />
+
+            <Box
+              component="form"
+              sx={{
+                "& .MuiTextField-root": { m: 0.5, width: "25ch" },
+              }}
+              autoComplete="off"
+              display="flex"
+              flexDirection="column"
+              onSubmit={(e) => {
+                handleSaveRoute(e);
+              }}
+            >
+              {msg.length !== 0 && (
+                <Alert
+                  severity={msg.status}
+                  onClose={() => {
+                    setMsg([]);
+                  }}
                 >
-                  Cancel
-                </Button>
-              </ButtonGroup>
-            )}
-          </Box>
-        </Drawer>
-      </Box>
+                  {msg.msg}
+                </Alert>
+              )}
+
+              <TextField
+                className="required"
+                required
+                id="outlined-required"
+                label="Name"
+                size="small"
+                name="routeName"
+                inputProps={{ required: true }}
+              />
+
+              <TextField
+                id="outlined"
+                label="Route Notes"
+                size="small"
+                name="routeNotes"
+              />
+
+              <Divider />
+              <Typography style={{ fontSize: "0.6rem" }}>
+                To add a Waypoint, click on 'Add Waypoint' and then either click
+                on a map or select a park & add to route
+              </Typography>
+              <Button
+                size="small"
+                width="10vw"
+                color="primary"
+                variant="outlined"
+                onClick={() => setAddOnMap(true)}
+              >
+                <AddLocationIcon></AddLocationIcon>Add Waypoint
+              </Button>
+              <CreateRouteList
+                onDragEnd={onDragEnd}
+                newRoutePoints={newRoutePoints}
+              />
+              {newRoutePoints.length > 1 && (
+                <ButtonGroup size="small" aria-label="Small button group">
+                  {user.length !== 0 ? (
+                    <Button type="submit" variant="contained">
+                      Save Route
+                    </Button>
+                  ) : (
+                    <Tooltip
+                      title="Please log in to save the route"
+                      placement="top-start"
+                    >
+                      <span>
+                        <Button variant="contained" disabled>
+                          Save Route
+                        </Button>
+                      </span>
+                    </Tooltip>
+                  )}
+                  <Button
+                    variant="outlined"
+                    onClick={(e) => handleCancelRoute(e)}
+                  >
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+              )}
+            </Box>
+          </Drawer>
+        </Box>
+        {user.length !== 0 && (
+          <Stack direction="row" sx={{ width: "8%" }}>
+            <div>
+              <Button>My Routes</Button>
+            </div>
+          </Stack>
+        )}
+      </>
     );
   }
 
   return (
-    <div style={{ textAlign: "right", width: "100%" }}>
-      <Button onClick={handleDrawerOpen}>Create Route</Button>
-    </div>
+    <Stack direction="row" sx={{ width: "12%" }}>
+      {user.length !== 0 && (
+        <div>
+          <Button>My Routes</Button>
+        </div>
+      )}
+      <div>
+        <Button onClick={handleDrawerOpen}>Create Route</Button>
+      </div>
+    </Stack>
   );
 }
 

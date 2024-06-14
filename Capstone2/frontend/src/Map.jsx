@@ -14,8 +14,9 @@ import ParkApi from "./api";
 import { handleFilters } from "./helpers/filtersHelper.jsx";
 import CreateRoute from "./CreateRoute";
 import MapMarker from "./MapMarker.jsx";
+import Stack from "@mui/material/Stack";
 
-const Map = () => {
+const Map = ({ newRoute, setNewRoute }) => {
   // loading data from redux
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user, shallowEqual);
@@ -89,7 +90,7 @@ const Map = () => {
   };
 
   //handling new routes creation
-  const [newRoute, setNewRoute] = useState(false);
+  //const [newRoute, setNewRoute] = useState(false);
   const [addOnMap, setAddOnMap] = useState(false);
   const [newRoutePoints, setNewRoutePoints] = useState([]);
 
@@ -115,15 +116,7 @@ const Map = () => {
 
   return (
     <div>
-      <CreateRoute
-        setNewRoute={setNewRoute}
-        setAddOnMap={setAddOnMap}
-        setNewRoutePoints={setNewRoutePoints}
-        newRoutePoints={newRoutePoints}
-        user={user}
-      />
-
-      <div style={{ width: newRoute ? "83vw" : "100vw" }}>
+      <Stack direction="row" sx={{ width: "100%" }}>
         <Filters
           filtersStates={filtersStates}
           filtersType={filtersType}
@@ -132,48 +125,55 @@ const Map = () => {
           handleFilterType={handleFilterType}
           handleFilterActivity={handleFilterActivity}
         />
+        <CreateRoute
+          setNewRoute={setNewRoute}
+          setAddOnMap={setAddOnMap}
+          setNewRoutePoints={setNewRoutePoints}
+          newRoutePoints={newRoutePoints}
+          user={user}
+        />
+      </Stack>
 
-        <MapContainer
-          center={[39.809879, -98.556732]}
-          zoom={4.5}
-          scrollWheelZoom={false}
-        >
-          {/* {addOnMap && ( */}
-          {newRoute && (
-            <MapRouteNew
-              setNewRoutePoints={setNewRoutePoints}
-              newRoutePoints={newRoutePoints}
-              setAddOnMap={setAddOnMap}
-              addOnMap={addOnMap}
-            />
-          )}
-
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      <MapContainer
+        center={[39.809879, -98.556732]}
+        zoom={4.5}
+        scrollWheelZoom={false}
+      >
+        {/* {addOnMap && ( */}
+        {newRoute && (
+          <MapRouteNew
+            setNewRoutePoints={setNewRoutePoints}
+            newRoutePoints={newRoutePoints}
+            setAddOnMap={setAddOnMap}
+            addOnMap={addOnMap}
           />
-          {parks.map((park) => (
-            <MapMarker
-              key={park.code}
-              park={park}
-              user={user}
-              getVisited={getVisited}
-              handleParkDetailsOpen={handleParkDetailsOpen}
-              handleVisited={handleVisited}
-              newRoutePoints={newRoutePoints}
-              setNewRoutePoints={setNewRoutePoints}
-              newRoute={newRoute}
-              visited={visited}
-            />
-          ))}
-          {parkDetails && (
-            <ParkDetails
-              parkCode={parkCode}
-              handleParkDetailsClose={handleParkDetailsClose}
-            />
-          )}
-        </MapContainer>
-      </div>
+        )}
+
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {parks.map((park) => (
+          <MapMarker
+            key={park.code}
+            park={park}
+            user={user}
+            getVisited={getVisited}
+            handleParkDetailsOpen={handleParkDetailsOpen}
+            handleVisited={handleVisited}
+            newRoutePoints={newRoutePoints}
+            setNewRoutePoints={setNewRoutePoints}
+            newRoute={newRoute}
+            visited={visited}
+          />
+        ))}
+        {parkDetails && (
+          <ParkDetails
+            parkCode={parkCode}
+            handleParkDetailsClose={handleParkDetailsClose}
+          />
+        )}
+      </MapContainer>
     </div>
   );
 };
