@@ -15,6 +15,7 @@ import { handleFilters } from "./helpers/filtersHelper.jsx";
 import CreateRoute from "./CreateRoute";
 import MapMarker from "./MapMarker.jsx";
 import Stack from "@mui/material/Stack";
+import RoutesList from "./RoutesList.jsx";
 
 const Map = ({ newRoute, setNewRoute }) => {
   // loading data from redux
@@ -132,6 +133,7 @@ const Map = ({ newRoute, setNewRoute }) => {
           newRoutePoints={newRoutePoints}
           user={user}
         />
+        <RoutesList user={user} />
       </Stack>
 
       <MapContainer

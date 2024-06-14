@@ -1,6 +1,6 @@
 import ParkApi from "../api";
 
-export function fetchRoutesFromAPI() {
+export function fetchRoutesFromAPI(username) {
   return async function (dispatch) {
     try {
       const response = await ParkApi.getUserRoutes(username);

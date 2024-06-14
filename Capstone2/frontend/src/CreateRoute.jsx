@@ -123,7 +123,8 @@ function CreateRoute({
                   <ChevronLeftIcon />
                 ) : (
                   <ChevronRightIcon />
-                )}
+                )}{" "}
+                <Typography>New Route</Typography>
               </IconButton>
             </DrawerHeader>
             <Divider />
@@ -215,24 +216,12 @@ function CreateRoute({
             </Box>
           </Drawer>
         </Box>
-        {user.length !== 0 && (
-          <Stack direction="row" sx={{ width: "8%" }}>
-            <div>
-              <Button>My Routes</Button>
-            </div>
-          </Stack>
-        )}
       </>
     );
   }
 
   return (
     <Stack direction="row" sx={{ width: "12%" }}>
-      {user.length !== 0 && (
-        <div>
-          <Button>My Routes</Button>
-        </div>
-      )}
       <div>
         <Button onClick={handleDrawerOpen}>Create Route</Button>
       </div>
