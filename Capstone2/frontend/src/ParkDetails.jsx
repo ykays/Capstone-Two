@@ -59,7 +59,7 @@ function ParkDetails({ parkCode, handleParkDetailsClose }) {
               />
               <Typography>{park.description}</Typography>
               <CardActions>
-                <Button href={park.url} size="small">
+                <Button href={park.url} size="small" target="_blank">
                   Learn More on NPS
                 </Button>
               </CardActions>

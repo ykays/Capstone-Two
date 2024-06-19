@@ -46,6 +46,8 @@ CREATE TABLE routes_details (
     seq_number INTEGER NOT NULL,
     waypoint_name TEXT NOT NULL,
     waypoint_longitude NUMERIC NOT NULL,
-    waypoint_latitude NUMERIC NOT NULL
+    waypoint_latitude NUMERIC NOT NULL,
+    park_flag BOOLEAN NOT NULL,
+    park_code VARCHAR(100)
 );
 

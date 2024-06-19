@@ -18,6 +18,8 @@ import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { List, ListItem, ListItemButton } from "@mui/material";
+import RouteDetails from "./RouteDetails";
+import { deleteRoute } from "./actions/routes";
 
 const drawerWidth = 340;
 
@@ -29,7 +31,13 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
-function RoutesList({ user }) {
+function RoutesList({
+  user,
+  setNewRoutePoints,
+  setNewRoute,
+  setAddOnMap,
+  newRoutePoints,
+}) {
   const dispatch = useDispatch();
   const userRoutes = useSelector((store) => store.routes, shallowEqual);
 
@@ -37,18 +45,27 @@ function RoutesList({ user }) {
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
+    dispatch(fetchRoutesFromAPI(user.username));
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+    setNewRoute(false);
+    setNewRoutePoints([]);
   };
 
   useEffect(() => {
-    dispatch(fetchRoutesFromAPI(user.username));
-  }, [dispatch]);
+    if (user.length !== 0) {
+      dispatch(fetchRoutesFromAPI(user.username));
+    }
+  }, [dispatch, user]);
 
-  console.log(userRoutes);
+  const deleteUserRoute = (id) => {
+    dispatch(deleteRoute(user.username, id));
+    dispatch(fetchRoutesFromAPI(user.username));
+  };
+
   if (open) {
     return (
       <>
@@ -77,13 +94,18 @@ function RoutesList({ user }) {
               </IconButton>
             </DrawerHeader>
             <Divider />
-            <List>
-              {userRoutes.map((route) => (
-                <ListItemButton key={route.id}>
-                  <ListItem key={route.id}>{route.routeName}</ListItem>
-                </ListItemButton>
-              ))}
-            </List>
+            {userRoutes.map((route) => (
+              <RouteDetails
+                key={route.id}
+                route={route}
+                user={user}
+                setNewRoutePoints={setNewRoutePoints}
+                setNewRoute={setNewRoute}
+                deleteUserRoute={deleteUserRoute}
+                setAddOnMap={setAddOnMap}
+                newRoutePoints={newRoutePoints}
+              />
+            ))}
           </Drawer>
         </Box>
       </>

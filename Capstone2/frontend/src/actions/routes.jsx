@@ -4,7 +4,10 @@ export function fetchRoutesFromAPI(username) {
   return async function (dispatch) {
     try {
       const response = await ParkApi.getUserRoutes(username);
-      return dispatch(getRoutes(response));
+      if (Object.keys(response).length === 0) {
+        return dispatch(getRoutes([]));
+      }
+      return dispatch(getRoutes(response.routes));
     } catch (e) {
       console.log(e);
     }
@@ -20,7 +23,34 @@ export function createNewRoute(username, routeName, routeNotes, routeDetails) {
         routeNotes,
         routeDetails
       );
-      return dispatch(getRoutes(response));
+      return dispatch(fetchRoutesFromAPI(username));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+export function deleteRoute(username, id) {
+  return async function (dispatch) {
+    try {
+      const deleteRoute = await ParkApi.deleteRoute(username, id);
+      return dispatch(fetchRoutesFromAPI(username));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+export function editRoute(username, routeId, routeNotes, routeDetails) {
+  return async function (dispatch) {
+    try {
+      const editRoute = await ParkApi.editRoute(
+        username,
+        routeId,
+        routeNotes,
+        routeDetails
+      );
+      return dispatch(fetchRoutesFromAPI(username));
     } catch (e) {
       console.log(e);
     }
@@ -30,6 +60,6 @@ export function createNewRoute(username, routeName, routeNotes, routeDetails) {
 export function getRoutes(routes) {
   return {
     type: "FETCH_ROUTES",
-    routes: routes.routes,
+    routes: routes,
   };
 }

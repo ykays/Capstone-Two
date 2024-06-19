@@ -91,7 +91,6 @@ const Map = ({ newRoute, setNewRoute }) => {
   };
 
   //handling new routes creation
-  //const [newRoute, setNewRoute] = useState(false);
   const [addOnMap, setAddOnMap] = useState(false);
   const [newRoutePoints, setNewRoutePoints] = useState([]);
 
@@ -133,7 +132,13 @@ const Map = ({ newRoute, setNewRoute }) => {
           newRoutePoints={newRoutePoints}
           user={user}
         />
-        <RoutesList user={user} />
+        <RoutesList
+          user={user}
+          setAddOnMap={setAddOnMap}
+          setNewRoutePoints={setNewRoutePoints}
+          newRoutePoints={newRoutePoints}
+          setNewRoute={setNewRoute}
+        />
       </Stack>
 
       <MapContainer

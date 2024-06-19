@@ -39,7 +39,9 @@ the index of an object in array will dictate the seq_number
         indx,
         waypoint.waypointName,
         waypoint.waypointLongitude,
-        waypoint.waypointLatitude
+        waypoint.waypointLatitude,
+        waypoint.parkFlag,
+        waypoint.parkCode
       );
     });
 
@@ -48,17 +50,27 @@ the index of an object in array will dictate the seq_number
     return route;
   }
 
-  static async addRouteDetails(routeId, seqNum, name, longitude, latitude) {
+  static async addRouteDetails(
+    routeId,
+    seqNum,
+    name,
+    longitude,
+    latitude,
+    parkFlag,
+    parkCode
+  ) {
     const results = await db.query(
       `INSERT INTO routes_details
-        (route_id, seq_number, waypoint_name, waypoint_longitude, waypoint_latitude)
-        VALUES($1, $2, $3, $4, $5)
+        (route_id, seq_number, waypoint_name, waypoint_longitude, waypoint_latitude, park_flag, park_code)
+        VALUES($1, $2, $3, $4, $5, $6, $7)
         RETURNING id, route_id as "routeId", seq_number as "seqNumber", 
         waypoint_name as "waypointName", 
         waypoint_longitude as "waypointLongitude", 
-        waypoint_latitude as "waypointLatitude"
+        waypoint_latitude as "waypointLatitude",
+        park_flag as "parkFlag",
+        park_code as "parkCode"
         `,
-      [routeId, seqNum, name, longitude, latitude]
+      [routeId, seqNum, name, longitude, latitude, parkFlag, parkCode]
     );
     const routeDetails = results.rows[0];
 
@@ -81,8 +93,7 @@ the index of an object in array will dictate the seq_number
     );
     const routes = results.rows;
 
-    if (routes.length === 0)
-      throw new NotFoundError(`No routes for: ${username}`);
+    if (routes.length === 0) return;
 
     for (let route of routes) {
       const routeDetails = await db.query(
@@ -90,7 +101,9 @@ the index of an object in array will dictate the seq_number
         seq_number as "seqNumber",
         waypoint_name as "waypointName",
         waypoint_longitude as "waypointLongitude",
-        waypoint_latitude as "waypointLatitude"
+        waypoint_latitude as "waypointLatitude",
+        park_flag as "parkFlag",
+        park_code as "parkCode"
         FROM routes_details
         WHERE route_id = $1`,
         [route.id]
@@ -123,7 +136,9 @@ the index of an object in array will dictate the seq_number
       seq_number as "seqNumber", 
       waypoint_name as "waypointName", 
       waypoint_longitude as "waypointLongitude", 
-      waypoint_latitude as "waypointLatitude"
+      waypoint_latitude as "waypointLatitude",
+      park_flag as "parkFlag",
+      park_code as "parkCode"
       FROM routes_details 
       WHERE route_id = $1`,
       [routeId]
@@ -200,7 +215,9 @@ the index of an object in array will dictate the seq_number
         indx,
         waypoint.waypointName,
         waypoint.waypointLongitude,
-        waypoint.waypointLatitude
+        waypoint.waypointLatitude,
+        waypoint.parkFlag,
+        waypoint.parkCode
       );
     });
     //getting the details of the changed route to return at the end as part of route

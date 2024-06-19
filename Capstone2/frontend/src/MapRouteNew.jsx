@@ -82,6 +82,7 @@ function MapRouteNew({
           return (
             <Marker icon={redIcon} position={point} key={indx}>
               <Popup>
+                <div style={{ textAlign: "center" }}>{[point[2]] || null}</div>
                 <Button
                   data-index={indx}
                   color="secondary"

@@ -13,7 +13,7 @@ function CreateRouteList({ onDragEnd, newRoutePoints }) {
           {(provided) => (
             <List {...provided.droppableProps} ref={provided.innerRef}>
               {newRoutePoints.map((route, indx) => {
-                if (!route[2]) {
+                if (route[3] !== "park") {
                   return (
                     <Draggable
                       key={indx}
@@ -36,6 +36,7 @@ function CreateRouteList({ onDragEnd, newRoutePoints }) {
                                 id="outlined-required"
                                 label="Provide Waypoint Name"
                                 size="small"
+                                value={route[2] || null}
                                 onChange={(e) => {
                                   route[2] = e.target.value;
                                 }}

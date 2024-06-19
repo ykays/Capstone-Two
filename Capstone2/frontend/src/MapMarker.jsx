@@ -54,15 +54,20 @@ function MapMarker({
   // if user cancels entire route (newRoutePoints will have length of 0) then the parkOnRoute needs to be cleared, too
   useEffect(() => {
     if (newRoutePoints.length === 0) {
-      setParkOnRoute([]);
+      return setParkOnRoute([]);
     }
+
+    setParkOnRoute(
+      newRoutePoints.map((point) => {
+        if (point[4]) return point[4];
+      })
+    );
   }, [newRoutePoints]);
 
   // adding park both to waypoints list and also to park on route list
   const addParkToRoute = (latitude, longitude, name, code) => {
     setNewRoutePoints([
       ...newRoutePoints,
-      //[latitude, longitude, "park", code, name],
       [latitude, longitude, name, "park", code],
     ]);
     setParkOnRoute((parks) => [...parks, code]);
@@ -73,7 +78,6 @@ function MapMarker({
     setNewRoutePoints(newRoutePoints.filter((point) => point[4] !== code));
     setParkOnRoute((parks) => parks.filter((park) => park !== code));
   };
-
   if (parkOnRoute.includes(park.code)) {
     return (
       <Marker

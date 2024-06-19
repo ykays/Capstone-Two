@@ -42,6 +42,7 @@ function CreateRoute({
   const handleDrawerOpen = () => {
     setOpen(true);
     setNewRoute(true);
+    setNewRoutePoints([]);
   };
 
   const handleDrawerClose = () => {
@@ -62,6 +63,8 @@ function CreateRoute({
         waypointName: point[2],
         waypointLongitude: point[1],
         waypointLatitude: point[0],
+        parkFlag: point[3] === "park" ? true : false,
+        parkCode: point[3] === "park" ? point[4] : null,
       };
     });
 
@@ -82,8 +85,8 @@ function CreateRoute({
   };
 
   const handleCancelRoute = (e) => {
-    e.target[0].value = "";
-    e.target[2].value = "";
+    e.target.parentElement.parentElement[0].value = "";
+    e.target.parentElement.parentElement[2].value = "";
     setNewRoutePoints([]);
     setMsg([]);
   };

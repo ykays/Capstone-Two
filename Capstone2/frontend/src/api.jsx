@@ -6,7 +6,7 @@ class ParksApi {
   static token;
 
   static async request(endpoint, data = {}, method = "get") {
-    console.debug("API Call:", endpoint, data, method);
+    //console.debug("API Call:", endpoint, data, method);
 
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${ParksApi.token}` };
@@ -90,6 +90,24 @@ class ParksApi {
   static async createNewRoute(username, routeName, routeNotes, routeDetails) {
     const data = { username, routeName, routeNotes, routeDetails };
     const res = await this.request(`routes/new`, data, "post");
+    return res;
+  }
+
+  static async deleteRoute(username, id) {
+    const res = await this.request(
+      `routes/${username}/${id}`,
+      "data",
+      "delete"
+    );
+    return res;
+  }
+  static async editRoute(username, routeId, routeNotes, routeDetails) {
+    const data = { routeNotes, routeDetails };
+    const res = await this.request(
+      `routes/${username}/${routeId}`,
+      data,
+      "patch"
+    );
     return res;
   }
 }
