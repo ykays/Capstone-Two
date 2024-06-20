@@ -11,9 +11,11 @@ function Filters({
   handleFilterType,
   handleFilterActivity,
 }) {
-  const handleFilterStateChange = (e) => handleFilterStates(e);
-  const handleFilterTypeChange = (e) => handleFilterType(e);
-  const handleFilterActivityChange = (e) => handleFilterActivity(e);
+  const handleFilterStateChange = (e, val) => {
+    handleFilterStates(val);
+  };
+  const handleFilterTypeChange = (e, val) => handleFilterType(val);
+  const handleFilterActivityChange = (e, val) => handleFilterActivity(val);
 
   return (
     <Stack direction="row" spacing={3} sx={{ width: "90%" }}>
@@ -21,9 +23,9 @@ function Filters({
         sx={{ display: "inline-flex", width: "100%" }}
         multiple
         size="small"
-        id="tags-standard"
+        id="filterState"
         options={filtersStates}
-        onChange={handleFilterStateChange}
+        onChange={(e, value) => handleFilterStateChange(e, value)}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -40,13 +42,14 @@ function Filters({
         size="small"
         id="tags-standard"
         options={filtersType}
-        onChange={handleFilterTypeChange}
+        onChange={(e, value) => handleFilterTypeChange(e, value)}
         renderInput={(params) => (
           <TextField
             {...params}
             variant="standard"
             label="Filter By Park Type(s)"
             placeholder="Type"
+            id="filterType"
           />
         )}
       />
@@ -56,13 +59,14 @@ function Filters({
         size="small"
         id="tags-standard"
         options={filtersActivity}
-        onChange={handleFilterActivityChange}
+        onChange={(e, value) => handleFilterActivityChange(e, value)}
         renderInput={(params) => (
           <TextField
             {...params}
             variant="standard"
             label="Filter By Activity"
             placeholder="Activity"
+            id="filterActivity"
           />
         )}
       />

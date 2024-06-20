@@ -11,7 +11,6 @@ import Button from "@mui/material/Button";
 import ParkDetails from "./ParkDetails";
 import MapRouteNew from "./MapRouteNew.jsx";
 import ParkApi from "./api";
-import { handleFilters } from "./helpers/filtersHelper.jsx";
 import CreateRoute from "./CreateRoute";
 import MapMarker from "./MapMarker.jsx";
 import Stack from "@mui/material/Stack";
@@ -44,18 +43,15 @@ const Map = ({ newRoute, setNewRoute }) => {
   };
   const [filters, setFilters] = useState(initialState);
 
-  const handleFilterStates = (e) => {
-    const filterValues = handleFilters(filters.states, e);
-    return setFilters((filters) => ({ ...filters, states: filterValues }));
+  const handleFilterStates = (val) => {
+    return setFilters((filters) => ({ ...filters, states: val }));
   };
-  const handleFilterType = (e) => {
-    const filterValues = handleFilters(filters.parkType, e);
-    return setFilters((filters) => ({ ...filters, parkType: filterValues }));
+  const handleFilterType = (val) => {
+    return setFilters((filters) => ({ ...filters, parkType: val }));
   };
 
-  const handleFilterActivity = (e) => {
-    const filterValues = handleFilters(filters.activity, e);
-    return setFilters((filters) => ({ ...filters, activity: filterValues }));
+  const handleFilterActivity = (val) => {
+    return setFilters((filters) => ({ ...filters, activity: val }));
   };
 
   // handling the parkDetails drawer

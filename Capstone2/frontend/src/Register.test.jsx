@@ -1,5 +1,6 @@
-import React from "react";
-import { render } from "@testing-library/react";
+import React, { act } from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import App from "./App";
 import Register from "./Register";
 import { Provider } from "react-redux";
 import root from "./reducers/root.jsx";
@@ -21,5 +22,20 @@ describe("Register", () => {
       </Provider>
     );
     expect(asFragment()).toMatchSnapshot();
+  });
+  it("displays the register details", async () => {
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+
+    await act(async () => await new Promise(process.nextTick));
+    fireEvent.click(screen.getByText(/Register/i));
+    expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Email Address/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/First Name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Last Name/i)).toBeInTheDocument();
   });
 });
