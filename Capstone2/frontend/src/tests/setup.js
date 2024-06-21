@@ -78,6 +78,107 @@ const user = {
   },
 };
 
+const routesUser = {
+  routes: [
+    {
+      id: 1,
+      username: "testUser",
+      routeName: "My Route 1",
+      routeNotes: "Route 1 Notes",
+      createTimestamp: "2024-06-18T18:06:20.982Z",
+      details: [
+        {
+          seqNumber: 0,
+          waypointName: "Portland",
+          waypointLongitude: "-122.69578185930418",
+          waypointLatitude: "45.30580259943578",
+          parkFlag: false,
+          parkCode: null,
+        },
+        {
+          seqNumber: 1,
+          waypointName: "Whitman Mission National Historic Site",
+          waypointLongitude: "-118.4629388",
+          waypointLatitude: "46.04119286",
+          parkFlag: true,
+          parkCode: "whmi",
+        },
+        {
+          seqNumber: 2,
+          waypointName: "John Day Fossil Beds National Monument",
+          waypointLongitude: "-119.8811491",
+          waypointLatitude: "44.62566508",
+          parkFlag: true,
+          parkCode: "joda",
+        },
+      ],
+    },
+    {
+      id: 2,
+      username: "testUser",
+      routeName: "My Route 2",
+      routeNotes: "Route 2 Notes",
+      createTimestamp: "2024-06-21T17:59:21.626Z",
+      details: [
+        {
+          seqNumber: 0,
+          waypointName: "Ice Age National Scenic Trail",
+          waypointLongitude: "-89.5612021706",
+          waypointLatitude: "43.9895697794",
+          parkFlag: true,
+          parkCode: "iatr",
+        },
+        {
+          seqNumber: 1,
+          waypointName: "Herbert Hoover National Historic Site",
+          waypointLongitude: "-91.35232139",
+          waypointLatitude: "41.66793558",
+          parkFlag: true,
+          parkCode: "heho",
+        },
+      ],
+    },
+  ],
+};
+
+const routesUserAfterDelete = {
+  routes: [
+    {
+      id: 1,
+      username: "testUser",
+      routeName: "My Route 1",
+      routeNotes: "Route 1 Notes",
+      createTimestamp: "2024-06-18T18:06:20.982Z",
+      details: [
+        {
+          seqNumber: 0,
+          waypointName: "Portland",
+          waypointLongitude: "-122.69578185930418",
+          waypointLatitude: "45.30580259943578",
+          parkFlag: false,
+          parkCode: null,
+        },
+        {
+          seqNumber: 1,
+          waypointName: "Whitman Mission National Historic Site",
+          waypointLongitude: "-118.4629388",
+          waypointLatitude: "46.04119286",
+          parkFlag: true,
+          parkCode: "whmi",
+        },
+        {
+          seqNumber: 2,
+          waypointName: "John Day Fossil Beds National Monument",
+          waypointLongitude: "-119.8811491",
+          waypointLatitude: "44.62566508",
+          parkFlag: true,
+          parkCode: "joda",
+        },
+      ],
+    },
+  ],
+};
+
 export const restHandlers = [
   http.get("http://localhost:3001/parks/", ({ request }) => {
     const url = new URL(request.url);
@@ -117,6 +218,18 @@ export const restHandlers = [
 
   http.get("http://localhost:3001/users/notes/testUser/acad", () => {
     return HttpResponse.json(parksUserNotes);
+  }),
+
+  http.post("http://localhost:3001/routes/new", () => {
+    return HttpResponse.json({ msg: "Route saved", status: "success" });
+  }),
+
+  http.get("http://localhost:3001/routes/testUser", () => {
+    return HttpResponse.json(routesUser);
+  }),
+
+  http.delete("http://localhost:3001/routes/testUser/2", () => {
+    return HttpResponse.json(routesUserAfterDelete);
   }),
 ];
 

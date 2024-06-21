@@ -135,6 +135,7 @@ function RouteDetails({
             <Divider />
             <Button
               variant="contained"
+              data-testid={"ShowRoute" + route.id}
               onClick={() => handleShowRoute(route.details)}
             >
               Show Route

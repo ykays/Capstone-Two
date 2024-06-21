@@ -33,7 +33,7 @@ test("displays the single park details user not logged in", async () => {
   );
 
   await act(async () => await new Promise(process.nextTick));
-  fireEvent.click(screen.getByRole("button", { name: "Marker" }));
+  fireEvent.click(screen.getByRole("button", { name: "acad" }));
   fireEvent.click(screen.getByText(/Details/i));
   await act(async () => await new Promise(process.nextTick));
   expect(
@@ -76,7 +76,7 @@ test("displays the single park details user logged in", async () => {
   );
 
   await act(async () => await new Promise(process.nextTick));
-  fireEvent.click(screen.getByRole("button", { name: "Marker" }));
+  fireEvent.click(screen.getByRole("button", { name: "acad" }));
   fireEvent.click(screen.getByText(/Details/i));
   await act(async () => await new Promise(process.nextTick));
   expect(

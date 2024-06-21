@@ -85,6 +85,7 @@ function MapMarker({
         key={park.code}
         position={[Number(park.latitude), Number(park.longitude)]}
         eventHandlers={{ click: (e) => getVisited(park.visited) }}
+        alt={park.code}
       >
         <Popup>
           {park.name} <br />
@@ -143,6 +144,7 @@ function MapMarker({
       key={park.code}
       position={[Number(park.latitude), Number(park.longitude)]}
       eventHandlers={{ click: (e) => getVisited(park.visited) }}
+      alt={park.code}
     >
       <Popup>
         {park.name} <br />

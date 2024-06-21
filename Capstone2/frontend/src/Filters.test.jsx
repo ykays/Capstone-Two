@@ -29,7 +29,7 @@ test("filters data on the map - marker present", async () => {
   await act(
     async () =>
       await waitFor(() => {
-        const markers = screen.getAllByRole("button", { name: "Marker" });
+        const markers = document.querySelectorAll(".leaflet-marker-icon");
         expect(markers.length).toBe(1);
       })
   );
@@ -59,7 +59,7 @@ test("filters data on the map - marker not present", async () => {
   await act(
     async () =>
       await waitFor(() => {
-        const markers = screen.queryAllByRole("button", { name: "Marker" });
+        const markers = document.querySelectorAll(".leaflet-marker-icon");
         expect(markers.length).toBe(0);
       })
   );
@@ -89,7 +89,7 @@ test("filters data on the map - marker not present and then filter removed", asy
   await act(
     async () =>
       await waitFor(() => {
-        const markers = screen.queryAllByRole("button", { name: "Marker" });
+        const markers = document.querySelectorAll(".leaflet-marker-icon");
         expect(markers.length).toBe(0);
       })
   );
@@ -103,7 +103,7 @@ test("filters data on the map - marker not present and then filter removed", asy
   await act(
     async () =>
       await waitFor(() => {
-        const markers = screen.queryAllByRole("button", { name: "Marker" });
+        const markers = document.querySelectorAll(".leaflet-marker-icon");
         expect(markers.length).toBe(1);
       })
   );

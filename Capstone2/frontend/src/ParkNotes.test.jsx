@@ -34,7 +34,7 @@ test("displays the park notes user saved", async () => {
   );
 
   await act(async () => await new Promise(process.nextTick));
-  fireEvent.click(screen.getByRole("button", { name: "Marker" }));
+  fireEvent.click(screen.getByRole("button", { name: "acad" }));
   fireEvent.click(screen.getByText(/Details/i));
   await act(async () => await new Promise(process.nextTick));
   expect(
@@ -74,7 +74,7 @@ test("displays the park notes user updated", async () => {
   );
 
   await act(async () => await new Promise(process.nextTick));
-  fireEvent.click(screen.getByRole("button", { name: "Marker" }));
+  fireEvent.click(screen.getByRole("button", { name: "acad" }));
   fireEvent.click(screen.getByText(/Details/i));
   await act(async () => await new Promise(process.nextTick));
   expect(

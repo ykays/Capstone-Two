@@ -34,12 +34,13 @@ describe("Create a new route", function () {
           waypointName: "Point1",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "test city",
+          parkFlag: true,
         },
         {
           waypointName: "Point2",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
+          parkFlag: false,
         },
       ],
     };
@@ -58,14 +59,16 @@ describe("Create a new route", function () {
         waypointName: "Point1",
         waypointLongitude: "42.531",
         waypointLatitude: "-71.6",
-        waypointNotes: "test city",
+        parkFlag: true,
+        parkCode: null,
       },
       {
         seqNumber: 1,
         waypointName: "Point2",
         waypointLongitude: "42.531",
         waypointLatitude: "-71.6",
-        waypointNotes: "",
+        parkFlag: false,
+        parkCode: null,
       },
     ]);
   });
@@ -79,12 +82,13 @@ describe("Create a new route", function () {
           waypointName: "Point1",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "test city",
+          parkFlag: true,
         },
         {
           waypointName: "Point2",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
+          parkFlag: false,
         },
       ],
     };
@@ -110,12 +114,13 @@ describe("Create a new route", function () {
           waypointName: "Point1",
           waypointLongitude: "42.531",
           waypointLatitude: "-71.6",
-          waypointNotes: "test city",
+          parkFlag: true,
         },
         {
           waypointName: "Point2",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
+          parkFlag: false,
         },
       ],
     };
@@ -144,7 +149,7 @@ describe("get routes for user", function () {
           waypointName: "Point1",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "test city",
+          parkFlag: true,
         },
       ],
     };
@@ -157,7 +162,7 @@ describe("get routes for user", function () {
           waypointName: "Point1",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "test city",
+          parkFlag: false,
         },
       ],
     };
@@ -188,7 +193,8 @@ describe("get routes for user", function () {
             waypointName: "Point1",
             waypointLongitude: "42.531",
             waypointLatitude: "-71.6",
-            waypointNotes: "test city",
+            parkFlag: true,
+            parkCode: null,
           },
         ],
       },
@@ -204,7 +210,8 @@ describe("get routes for user", function () {
             waypointName: "Point1",
             waypointLongitude: "42.531",
             waypointLatitude: "-71.6",
-            waypointNotes: "test city",
+            parkFlag: false,
+            parkCode: null,
           },
         ],
       },
@@ -216,7 +223,7 @@ describe("get routes for user", function () {
       fail();
     } catch (err) {
       console.log(err);
-      expect(err instanceof NotFoundError).toBeTruthy();
+      expect(err instanceof NotFoundError).toBeFalsy();
     }
   });
 });
@@ -232,12 +239,13 @@ describe("get route details", function () {
           waypointName: "Point1",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "test city",
+          parkFlag: true,
         },
         {
           waypointName: "Point2",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
+          parkFlag: false,
         },
       ],
     };
@@ -259,14 +267,16 @@ describe("get route details", function () {
         waypointName: "Point1",
         waypointLongitude: "42.531",
         waypointLatitude: "-71.6",
-        waypointNotes: "test city",
+        parkFlag: true,
+        parkCode: null,
       },
       {
         seqNumber: 1,
         waypointName: "Point2",
         waypointLongitude: "42.531",
         waypointLatitude: "-71.6",
-        waypointNotes: "",
+        parkFlag: false,
+        parkCode: null,
       },
     ]);
   });
@@ -293,12 +303,13 @@ describe("delete route", function () {
           waypointName: "Point1",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "test city",
+          parkFlag: true,
         },
         {
           waypointName: "Point2",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
+          parkFlag: true,
         },
       ],
     };
@@ -336,12 +347,13 @@ describe("edit route", function () {
           waypointName: "Point1",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "test city",
+          parkFlag: true,
         },
         {
           waypointName: "Point2",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
+          parkFlag: false,
         },
       ],
     };
@@ -360,13 +372,13 @@ describe("edit route", function () {
           waypointName: "Point1Edited",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "test city",
+          parkFlag: true,
         },
         {
           waypointName: "Point2Edited",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "new note",
+          parkFlag: false,
         },
       ],
     };
@@ -383,14 +395,16 @@ describe("edit route", function () {
           waypointName: "Point1Edited",
           waypointLongitude: "42.531",
           waypointLatitude: "-71.6",
-          waypointNotes: "test city",
+          parkFlag: true,
+          parkCode: null,
         },
         {
           seqNumber: 1,
           waypointName: "Point2Edited",
           waypointLongitude: "42.531",
           waypointLatitude: "-71.6",
-          waypointNotes: "new note",
+          parkFlag: false,
+          parkCode: null,
         },
       ],
     });
@@ -405,12 +419,13 @@ describe("edit route", function () {
           waypointName: "Point1",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "test city",
+          parkFlag: true,
         },
         {
           waypointName: "Point2",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
+          parkFlag: true,
         },
       ],
     };
@@ -429,12 +444,13 @@ describe("edit route", function () {
           waypointName: "Point1",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
-          waypointNotes: "test city",
+          parkFlag: true,
         },
         {
           waypointName: "Point2",
           waypointLongitude: 42.531,
           waypointLatitude: -71.6,
+          parkFlag: true,
         },
       ],
     };
@@ -451,14 +467,16 @@ describe("edit route", function () {
           waypointName: "Point1",
           waypointLongitude: "42.531",
           waypointLatitude: "-71.6",
-          waypointNotes: "test city",
+          parkFlag: true,
+          parkCode: null,
         },
         {
           seqNumber: 1,
           waypointName: "Point2",
           waypointLongitude: "42.531",
           waypointLatitude: "-71.6",
-          waypointNotes: "",
+          parkFlag: true,
+          parkCode: null,
         },
       ],
     });

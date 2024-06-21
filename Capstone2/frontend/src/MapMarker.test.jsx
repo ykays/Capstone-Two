@@ -15,7 +15,7 @@ it("displays the park Marker details user not logged in", async () => {
   );
 
   await act(async () => await new Promise(process.nextTick));
-  fireEvent.click(screen.getByRole("button", { name: "Marker" }));
+  fireEvent.click(screen.getByRole("button", { name: "acad" }));
   expect(screen.getByText(/Acadia/i)).toBeInTheDocument();
   expect(screen.getByText(/Details/i)).toBeInTheDocument();
   expect(screen.getByText(/Visited/i)).toBeInTheDocument();
@@ -51,7 +51,7 @@ it("displays the park Marker details user logged in", async () => {
   );
 
   await act(async () => await new Promise(process.nextTick));
-  fireEvent.click(screen.getByRole("button", { name: "Marker" }));
+  fireEvent.click(screen.getByRole("button", { name: "acad" }));
   expect(screen.getByText(/Acadia/i)).toBeInTheDocument();
   expect(screen.getByText(/Details/i)).toBeInTheDocument();
   expect(screen.getByText(/Visited/i)).toBeInTheDocument();
@@ -76,7 +76,7 @@ it("user logged in, mark park as visited", async () => {
   );
 
   await act(async () => await new Promise(process.nextTick));
-  fireEvent.click(screen.getByRole("button", { name: "Marker" }));
+  fireEvent.click(screen.getByRole("button", { name: "acad" }));
   fireEvent.click(screen.getByText(/Visited/i));
   await act(async () => await new Promise(process.nextTick));
   expect(screen.getByText(/Unvisited/i)).toBeInTheDocument();

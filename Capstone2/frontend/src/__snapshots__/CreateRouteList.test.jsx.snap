@@ -1,0 +1,128 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CreateRoute smoke tests > matches snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <ul
+      class="MuiList-root MuiList-padding css-h4y409-MuiList-root"
+      data-rbd-droppable-context-id="1"
+      data-rbd-droppable-id="droppable-list"
+    >
+      <li
+        class="MuiListItem-root MuiListItem-gutters MuiListItem-padding css-1p823my-MuiListItem-root"
+      >
+        <span
+          aria-label="Drag and drop to change the order"
+          class=""
+          data-mui-internal-clone-element="true"
+        >
+          <div
+            aria-describedby="rbd-hidden-text-1-hidden-text-4"
+            class="MuiFormControl-root MuiTextField-root css-1u3bzj6-MuiFormControl-root-MuiTextField-root"
+            data-rbd-drag-handle-context-id="1"
+            data-rbd-drag-handle-draggable-id="0"
+            data-rbd-draggable-context-id="1"
+            data-rbd-draggable-id="0"
+            draggable="false"
+            role="button"
+            tabindex="0"
+          >
+            <label
+              class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeSmall MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiFormLabel-filled Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeSmall MuiInputLabel-outlined css-1jy569b-MuiFormLabel-root-MuiInputLabel-root"
+              data-shrink="true"
+              for="outlined-required"
+              id="outlined-required-label"
+            >
+              Provide Waypoint Name
+              <span
+                aria-hidden="true"
+                class="MuiFormLabel-asterisk MuiInputLabel-asterisk css-wgai2y-MuiFormLabel-asterisk"
+              >
+                 *
+              </span>
+            </label>
+            <div
+              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiInputBase-sizeSmall css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
+            >
+              <input
+                aria-invalid="false"
+                class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input"
+                id="outlined-required"
+                required=""
+                type="text"
+                value="Portland"
+              />
+              <fieldset
+                aria-hidden="true"
+                class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+              >
+                <legend
+                  class="css-14lo706"
+                >
+                  <span>
+                    Provide Waypoint Name *
+                  </span>
+                </legend>
+              </fieldset>
+            </div>
+          </div>
+        </span>
+      </li>
+      <li
+        class="MuiListItem-root MuiListItem-gutters MuiListItem-padding css-1p823my-MuiListItem-root"
+      >
+        <span
+          aria-label="Drag and drop to change the order"
+          class=""
+          data-mui-internal-clone-element="true"
+        >
+          <div
+            aria-describedby="rbd-hidden-text-1-hidden-text-4"
+            class="MuiFormControl-root MuiTextField-root css-1u3bzj6-MuiFormControl-root-MuiTextField-root"
+            data-rbd-drag-handle-context-id="1"
+            data-rbd-drag-handle-draggable-id="1"
+            data-rbd-draggable-context-id="1"
+            data-rbd-draggable-id="1"
+            draggable="false"
+            role="button"
+            tabindex="0"
+          >
+            <label
+              class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeSmall MuiInputLabel-outlined MuiFormLabel-colorPrimary Mui-disabled MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-sizeSmall MuiInputLabel-outlined css-1jy569b-MuiFormLabel-root-MuiInputLabel-root"
+              data-shrink="true"
+              for="outlined-disabled"
+              id="outlined-disabled-label"
+            >
+              Waypoint
+            </label>
+            <div
+              class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary Mui-disabled MuiInputBase-formControl MuiInputBase-sizeSmall css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
+            >
+              <input
+                aria-invalid="false"
+                class="MuiInputBase-input MuiOutlinedInput-input Mui-disabled MuiInputBase-inputSizeSmall css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input"
+                disabled=""
+                id="outlined-disabled"
+                type="text"
+                value="North Cascades National Park"
+              />
+              <fieldset
+                aria-hidden="true"
+                class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+              >
+                <legend
+                  class="css-14lo706"
+                >
+                  <span>
+                    Waypoint
+                  </span>
+                </legend>
+              </fieldset>
+            </div>
+          </div>
+        </span>
+      </li>
+    </ul>
+  </div>
+</DocumentFragment>
+`;

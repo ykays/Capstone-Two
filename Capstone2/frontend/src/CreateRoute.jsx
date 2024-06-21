@@ -38,6 +38,10 @@ function CreateRoute({
 }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [routeNameNotes, setRouteNameNotes] = useState({
+    routeName: "",
+    routeNotes: "",
+  });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -52,11 +56,18 @@ function CreateRoute({
 
   const [msg, setMsg] = useState([]);
 
+  const handleChangeRouteNameNotes = (e) => {
+    const { name, value } = e.target;
+    setRouteNameNotes((form) => ({ ...form, [name]: value }));
+  };
+
   const handleSaveRoute = async (e) => {
     e.preventDefault();
 
-    const routeName = e.target[0].value;
-    const routeNotes = e.target[2].value;
+    const routeName = routeNameNotes["routeName"];
+    const routeNotes = routeNameNotes["routeNotes"];
+    // const routeName = e.target[0].value;
+    // const routeNotes = e.target[2].value;
 
     const routeDetails = newRoutePoints.map((point) => {
       return {
@@ -75,8 +86,8 @@ function CreateRoute({
         routeNotes,
         routeDetails
       );
-      e.target[0].value = "";
-      e.target[2].value = "";
+      routeNameNotes["routeName"] = "";
+      routeNameNotes["routeNotes"] = "";
       setNewRoutePoints([]);
       return setMsg({ msg: "Route saved", status: "success" });
     } catch (e) {
@@ -85,8 +96,8 @@ function CreateRoute({
   };
 
   const handleCancelRoute = (e) => {
-    e.target.parentElement.parentElement[0].value = "";
-    e.target.parentElement.parentElement[2].value = "";
+    routeNameNotes["routeName"] = "";
+    routeNameNotes["routeNotes"] = "";
     setNewRoutePoints([]);
     setMsg([]);
   };
@@ -162,7 +173,9 @@ function CreateRoute({
                 label="Name"
                 size="small"
                 name="routeName"
+                value={routeNameNotes.routeName}
                 inputProps={{ required: true }}
+                onChange={handleChangeRouteNameNotes}
               />
 
               <TextField
@@ -170,6 +183,8 @@ function CreateRoute({
                 label="Route Notes"
                 size="small"
                 name="routeNotes"
+                value={routeNameNotes.routeNotes}
+                onChange={handleChangeRouteNameNotes}
               />
 
               <Divider />

@@ -33,7 +33,6 @@ FROM parks`;
   if (whereExpressions.length > 0) {
     query += " WHERE " + whereExpressions.join(" AND ");
   }
-
   return { query, queryValues };
 }
 

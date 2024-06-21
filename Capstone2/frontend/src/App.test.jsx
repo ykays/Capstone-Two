@@ -57,7 +57,7 @@ it("displays the park Markers on the map", async () => {
   );
 
   await act(async () => await new Promise(process.nextTick));
-  const markers = screen.getAllByRole("button", { name: "Marker" });
+  const markers = screen.getAllByRole("button", { name: "acad" });
   expect(markers.length).toBe(1);
 });
 

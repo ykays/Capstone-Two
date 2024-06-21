@@ -68,7 +68,6 @@ class ParksApi {
   static async saveNote(username, parkCode, note) {
     const data = { username, parkCode, note };
     const res = await this.request(`users/notes`, data, "post");
-    console.log(res);
     return res;
   }
 

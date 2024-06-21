@@ -53,38 +53,6 @@ describe("get all parks for no user", function () {
         parkType: "National Park",
         state: "NH",
       },
-      {
-        code: "code4",
-        name: "Park Name Four",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-      },
-      {
-        code: "code5",
-        name: "Park Name Five",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Reserve",
-        state: "MA",
-      },
-      {
-        code: "code6",
-        name: "Park Name Six",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "NH",
-      },
-      {
-        code: "code7",
-        name: "Park Name Seven",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-      },
     ]);
   });
   test("get parks with state filter", async function () {
@@ -94,30 +62,6 @@ describe("get all parks for no user", function () {
       {
         code: "code1",
         name: "Park Name One",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-      },
-      {
-        code: "code4",
-        name: "Park Name Four",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-      },
-      {
-        code: "code5",
-        name: "Park Name Five",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Reserve",
-        state: "MA",
-      },
-      {
-        code: "code7",
-        name: "Park Name Seven",
         longitude: "-85.67330523",
         latitude: "37.5858662",
         parkType: "National Park",
@@ -145,30 +89,6 @@ describe("get all parks for no user", function () {
         parkType: "National Park",
         state: "NH",
       },
-      {
-        code: "code4",
-        name: "Park Name Four",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-      },
-      {
-        code: "code6",
-        name: "Park Name Six",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "NH",
-      },
-      {
-        code: "code7",
-        name: "Park Name Seven",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-      },
     ]);
   });
   test("get parks with activity filter", async function () {
@@ -182,34 +102,15 @@ describe("get all parks for no user", function () {
         latitude: "37.5858662",
         parkType: "National Park",
         state: "MA",
-        activity: "Biking",
       },
+
       {
-        code: "code1",
-        name: "Park Name One",
+        code: "code2",
+        name: "Park Name Two",
         longitude: "-85.67330523",
         latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-        activity: "Hiking",
-      },
-      {
-        code: "code3",
-        name: "Park Name Three",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
+        parkType: "National Reserve",
         state: "NH",
-        activity: "Hiking",
-      },
-      {
-        code: "code6",
-        name: "Park Name Six",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "NH",
-        activity: "Hiking",
       },
     ]);
   });
@@ -228,22 +129,12 @@ describe("get all parks for no user", function () {
         latitude: "37.5858662",
         parkType: "National Park",
         state: "MA",
-        activity: "Hiking",
-      },
-      {
-        code: "code1",
-        name: "Park Name One",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-        activity: "Biking",
       },
     ]);
   });
 });
 
-/// GETS PARKS FOR USER
+//// GETS PARKS FOR USER
 describe("get all parks with user info", function () {
   test("get parks with no filters", async function () {
     const res = await Park.getAllParksForUser("u1");
@@ -276,42 +167,6 @@ describe("get all parks with user info", function () {
         state: "NH",
         visited: true,
       },
-      {
-        code: "code4",
-        name: "Park Name Four",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-        visited: false,
-      },
-      {
-        code: "code5",
-        name: "Park Name Five",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Reserve",
-        state: "MA",
-        visited: false,
-      },
-      {
-        code: "code6",
-        name: "Park Name Six",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "NH",
-        visited: false,
-      },
-      {
-        code: "code7",
-        name: "Park Name Seven",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-        visited: false,
-      },
     ]);
   });
   test("get parks with state filter", async function () {
@@ -326,33 +181,6 @@ describe("get all parks with user info", function () {
         parkType: "National Park",
         state: "MA",
         visited: true,
-      },
-      {
-        code: "code4",
-        name: "Park Name Four",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-        visited: false,
-      },
-      {
-        code: "code5",
-        name: "Park Name Five",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Reserve",
-        state: "MA",
-        visited: false,
-      },
-      {
-        code: "code7",
-        name: "Park Name Seven",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-        visited: false,
       },
     ]);
   });
@@ -378,33 +206,6 @@ describe("get all parks with user info", function () {
         state: "NH",
         visited: true,
       },
-      {
-        code: "code4",
-        name: "Park Name Four",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-        visited: false,
-      },
-      {
-        code: "code6",
-        name: "Park Name Six",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "NH",
-        visited: false,
-      },
-      {
-        code: "code7",
-        name: "Park Name Seven",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-        visited: false,
-      },
     ]);
   });
   test("get parks with activity filter", async function () {
@@ -418,37 +219,16 @@ describe("get all parks with user info", function () {
         latitude: "37.5858662",
         parkType: "National Park",
         state: "MA",
-        activity: "Biking",
         visited: true,
       },
+
       {
-        code: "code1",
-        name: "Park Name One",
+        code: "code2",
+        name: "Park Name Two",
         longitude: "-85.67330523",
         latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-        activity: "Hiking",
-        visited: true,
-      },
-      {
-        code: "code3",
-        name: "Park Name Three",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
+        parkType: "National Reserve",
         state: "NH",
-        activity: "Hiking",
-        visited: true,
-      },
-      {
-        code: "code6",
-        name: "Park Name Six",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "NH",
-        activity: "Hiking",
         visited: false,
       },
     ]);
@@ -468,17 +248,6 @@ describe("get all parks with user info", function () {
         latitude: "37.5858662",
         parkType: "National Park",
         state: "MA",
-        activity: "Hiking",
-        visited: true,
-      },
-      {
-        code: "code1",
-        name: "Park Name One",
-        longitude: "-85.67330523",
-        latitude: "37.5858662",
-        parkType: "National Park",
-        state: "MA",
-        activity: "Biking",
         visited: true,
       },
     ]);

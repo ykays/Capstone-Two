@@ -34,7 +34,6 @@ class Park {
       filterResults.query,
       filterResults.queryValues
     );
-
     return results.rows;
   }
 
@@ -67,6 +66,7 @@ class Park {
       filterResults.query,
       filterResults.queryValues
     );
+
     //adding visited flag to the results
     const parks = results.rows.map((result) => {
       result.visited = false;
