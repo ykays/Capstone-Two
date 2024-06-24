@@ -6,6 +6,14 @@ import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import ParkApi from "./api";
 
+/*
+  If the user is logged in, the App will allow them to save a note about the park
+  If the user is not logged in, 
+  the message will be displayed to inform that only logged in user can save the note
+
+  This component handles Park Note form, saving the notes, 
+  and retrieving/displaying the notes that have already been saved by the user
+*/
 function ParkNotes({ user, parkCode }) {
   const [noteForm, setNoteForm] = useState("");
   const [msg, setMsg] = useState([]);

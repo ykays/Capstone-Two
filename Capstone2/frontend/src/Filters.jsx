@@ -3,6 +3,12 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 
+/* 
+Component to display the Parks Filters (Filter By State, Park Type, Activity)
+The options are retrieved from redux in the main Map component 
+The function are defined in the main Map component so that the Map can be adjusted based on the user selections
+
+*/
 function Filters({
   filtersStates,
   filtersType,

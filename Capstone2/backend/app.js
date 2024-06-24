@@ -15,6 +15,7 @@ const { authenticateJWT } = require("./middleware/auth");
 const usersParksRoutes = require("./routes/routes");
 const usersRoutes = require("./routes/users");
 const parksRoutes = require("./routes/parks");
+const npsRoutes = require("./routes/nps");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(authenticateJWT);
 app.use("/users", usersRoutes);
 app.use("/parks", parksRoutes);
 app.use("/routes", usersParksRoutes);
+app.use("/nps", npsRoutes);
 
 /** 404 handler */
 app.use(function (req, res, next) {

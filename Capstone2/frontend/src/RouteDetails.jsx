@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { editRoute } from "./actions/routes";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -11,7 +10,6 @@ import {
   Box,
   TextField,
   Divider,
-  Typography,
   ButtonGroup,
   Alert,
   Link,
@@ -20,6 +18,15 @@ import {
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import CreateRouteList from "./CreateRouteList";
 import { routeReorder } from "./helpers/routeHelper";
+
+/*
+  Component to display the details of the user's saved route
+  It displays the Name and Notes and once user clicks on Show Route Details,
+  the component will render the route waypoints and will show the route on the map.
+
+  The user can edit the route (and then hit Save Changes), the route will be saved in DB.
+  The user can also delete the route and/or view the route in google maps.
+*/
 
 function RouteDetails({
   user,
@@ -33,6 +40,7 @@ function RouteDetails({
   const dispatch = useDispatch();
   const [msg, setMsg] = useState([]);
   const [showRoute, setShowRoute] = useState(false);
+  const [notesForm, setNotesForm] = useState(route.routeNotes);
 
   function getPointsFromAPI(points) {
     return points.map((point) => {
@@ -46,6 +54,10 @@ function RouteDetails({
     });
   }
 
+  const handleChangeNotes = (e) => {
+    setNotesForm(e.target.value);
+  };
+
   const handleShowRoute = (points) => {
     const routeWaypoints = getPointsFromAPI(points);
     setNewRoutePoints(routeWaypoints);
@@ -53,9 +65,9 @@ function RouteDetails({
     setShowRoute(true);
   };
 
-  const handleSaveRoute = (e) => {
+  const handleSaveRoute = async (e) => {
     e.preventDefault();
-    const routeNotes = e.target.form[2].value;
+    const routeNotes = notesForm;
     const routeDetails = newRoutePoints.map((point) => {
       return {
         waypointName: point[2],
@@ -65,7 +77,10 @@ function RouteDetails({
         parkCode: point[3] === "park" ? point[4] : null,
       };
     });
-    dispatch(editRoute(user.username, route.id, routeNotes, routeDetails));
+    const res = await dispatch(
+      editRoute(user.username, route.id, routeNotes, routeDetails)
+    );
+    setMsg(res);
   };
 
   const handleDeleteRoute = async (id) => {
@@ -131,6 +146,7 @@ function RouteDetails({
               size="small"
               name="routeNotes"
               defaultValue={route.routeNotes}
+              onChange={handleChangeNotes}
             />
             <Divider />
             <Button

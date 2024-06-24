@@ -462,3 +462,87 @@ test("saving a route", async () => {
   expect(screen.getByLabelText(/Route Notes/i)).toHaveValue("");
   expect(screen.queryAllByLabelText("Waypoint")).toHaveLength(0);
 });
+
+test("saved route appears in the My Routes list", async () => {
+  const user = {
+    username: "testUser",
+    email: "testUser@gmail.com",
+    firstName: "Test",
+    lastName: "User",
+  };
+  const parks = [
+    {
+      code: "acad",
+      name: "Acadia National Park",
+      longitude: "-68.247501",
+      latitude: "44.409286",
+      parkType: "National Park",
+      state: "ME",
+    },
+    {
+      code: "adam",
+      name: "Adams National Historical Park",
+      longitude: "-71.01160356",
+      latitude: "42.2553961",
+      parkType: "National Historical Park",
+      state: "MA",
+    },
+  ];
+
+  const store = configureStore({ reducer: root });
+  store.dispatch({ type: "FETCH_USER", user: user });
+  store.dispatch({ type: "FETCH_PARKS", parks: parks });
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+  await act(async () => await new Promise(process.nextTick));
+  store.dispatch({ type: "FETCH_PARKS", parks: parks });
+  await act(async () => await new Promise(process.nextTick));
+
+  act(() => {
+    fireEvent.click(screen.getByText(/Create Route/i));
+    fireEvent.click(screen.getByAltText("acad"));
+  });
+  act(() => {
+    fireEvent.click(screen.getByText("Add to Route"));
+  });
+
+  act(() => {
+    fireEvent.click(screen.getByRole("button", { name: "adam" }));
+  });
+  act(() => {
+    fireEvent.click(screen.getByRole("button", { name: "Add to Route" }));
+  });
+
+  const routeName = screen.getByLabelText(/Name/i);
+  act(() => {
+    fireEvent.click(routeName);
+    fireEvent.change(routeName, { target: { value: "My Test Route" } });
+  });
+
+  const routeNotes = screen.getByLabelText(/Route Notes/i);
+  act(() => {
+    fireEvent.click(routeNotes);
+    fireEvent.change(routeNotes, { target: { value: "My Test Notes" } });
+  });
+
+  act(() => {
+    fireEvent.click(screen.getByRole("button", { name: "Save Route" }));
+  });
+  await act(async () => await new Promise(process.nextTick));
+
+  expect(screen.getByRole("alert")).toBeInTheDocument();
+  expect(screen.getByRole("alert")).toHaveTextContent("Route saved");
+  expect(screen.getByLabelText(/Name/i)).toHaveValue("");
+  expect(screen.getByLabelText(/Route Notes/i)).toHaveValue("");
+  expect(screen.queryAllByLabelText("Waypoint")).toHaveLength(0);
+
+  act(() => {
+    fireEvent.click(screen.getByText(/My Routes/i));
+  });
+  await act(async () => await new Promise(process.nextTick));
+
+  expect(screen.getByText("My Test Route")).toBeInTheDocument();
+});

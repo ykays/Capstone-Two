@@ -29,6 +29,15 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
+/*
+  Main Component to Create a Route
+  First, it renders a button "Create Route". 
+  Once clicked, the drawer slides out where the user can provide route name and notes and add waypoints.
+  The list of all waypoints is handled in CreateRouteList.
+
+  If the user is logged it, the route can ba saved (handled by handleSaveRoute function).
+  User can also click on cancel button, which will clear the waypoints list and route name and notes.
+*/
 function CreateRoute({
   setNewRoute,
   setAddOnMap,
@@ -66,8 +75,6 @@ function CreateRoute({
 
     const routeName = routeNameNotes["routeName"];
     const routeNotes = routeNameNotes["routeNotes"];
-    // const routeName = e.target[0].value;
-    // const routeNotes = e.target[2].value;
 
     const routeDetails = newRoutePoints.map((point) => {
       return {

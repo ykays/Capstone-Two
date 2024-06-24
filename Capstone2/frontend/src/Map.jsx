@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import Tooltip from "@mui/material/Tooltip";
 import { fetchParksFromAPI, fetchParksFromAPIForUser } from "./actions/parks";
 import { fetchFilterDataFromAPI } from "./actions/filters";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import Filters from "./Filters";
-import Button from "@mui/material/Button";
 import ParkDetails from "./ParkDetails";
 import MapRouteNew from "./MapRouteNew.jsx";
 import ParkApi from "./api";
@@ -16,8 +14,14 @@ import MapMarker from "./MapMarker.jsx";
 import Stack from "@mui/material/Stack";
 import RoutesList from "./RoutesList.jsx";
 
+/*
+  Main Component of the App
+  Displays the Map with all parks; parks details; user's visited parks and users notes
+  Allows user to create and display the routes on the Map 
+
+*/
 const Map = ({ newRoute, setNewRoute }) => {
-  // loading data from redux
+  // loading data from redux (user details, all patks, and filters data)
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user, shallowEqual);
   const parks = useSelector((store) => store.parks, shallowEqual);
@@ -35,7 +39,11 @@ const Map = ({ newRoute, setNewRoute }) => {
   );
   const [isLoading, setIsLoading] = useState(true);
 
-  // handling the filters
+  /* 
+    handling the filters based on which the Map component will be adjusted
+    the state of filters is defined and stored in the Map 
+    the filters selections are received from Filters Component based on user activity
+  */
   const initialState = {
     states: [],
     parkType: [],
@@ -54,7 +62,10 @@ const Map = ({ newRoute, setNewRoute }) => {
     return setFilters((filters) => ({ ...filters, activity: val }));
   };
 
-  // handling the parkDetails drawer
+  /* 
+    handling the parkDetails drawer (whether should be display on the screen or not)
+    the details are being handled in the ParkDetails Component 
+  */
   const [parkDetails, setParkDetails] = useState(false);
   const [parkCode, setParkCode] = useState(null);
 
@@ -66,7 +77,11 @@ const Map = ({ newRoute, setNewRoute }) => {
     setParkCode(null);
     setParkDetails(false);
   };
-  // handling the visited flag
+
+  /* 
+   handling the visited flag which determines the park icon color and buttons in the popup
+   (if the user already visited the park, the icon will be green and button will have value of unvisited)
+  */
   const [visited, setVisited] = useState(null);
   const getVisited = (val) => {
     setVisited(val);
@@ -86,7 +101,10 @@ const Map = ({ newRoute, setNewRoute }) => {
     setVisited(!visited);
   };
 
-  //handling new routes creation
+  /*
+    handling new routes creation state to determine whether user can add a marker on the map or not by clicking on the map
+    storing the route points user selected so the entire route can be displayed on the map
+  */
   const [addOnMap, setAddOnMap] = useState(false);
   const [newRoutePoints, setNewRoutePoints] = useState([]);
 
@@ -142,7 +160,6 @@ const Map = ({ newRoute, setNewRoute }) => {
         zoom={4.5}
         scrollWheelZoom={false}
       >
-        {/* {addOnMap && ( */}
         {newRoute && (
           <MapRouteNew
             setNewRoutePoints={setNewRoutePoints}

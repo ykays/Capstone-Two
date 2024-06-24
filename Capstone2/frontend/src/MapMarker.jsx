@@ -3,6 +3,15 @@ import Tooltip from "@mui/material/Tooltip";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import Button from "@mui/material/Button";
 
+/*
+  Component to display park Markers
+  Within each Marker, the user can click to display Park Details, 
+  if the user is logged in, they can also mark the park as visited(the icon will become green)
+
+  During the route creation, once the user click on the Park Marker, 
+  additional button will appear - Add to Route (or Remove from Route)
+  which will allow user to add the park to their route 
+*/
 function MapMarker({
   park,
   user,
@@ -48,15 +57,21 @@ function MapMarker({
     shadowSize: [41, 41],
   });
 
-  //to gather list of parks that were added to the route by the user (to help get diff icon and set remove/add to route button)
+  /*
+   list of parks that were added to the route by the user 
+   (to help get diff icon and set remove/add to route button)
+  */
   const [parkOnRoute, setParkOnRoute] = useState([]);
 
-  // if user cancels entire route (newRoutePoints will have length of 0) then the parkOnRoute needs to be cleared, too
+  /* 
+    if user cancels entire route (newRoutePoints will have length of 0) 
+    then the parkOnRoute needs to be cleared, too
+    otherwise, checking if the route point is park and adding parkOnRoute list
+  */
   useEffect(() => {
     if (newRoutePoints.length === 0) {
       return setParkOnRoute([]);
     }
-
     setParkOnRoute(
       newRoutePoints.map((point) => {
         if (point[4]) return point[4];
@@ -64,7 +79,10 @@ function MapMarker({
     );
   }, [newRoutePoints]);
 
-  // adding park both to waypoints list and also to park on route list
+  /*
+  if user is in the 'create route mode' this function will be called to add park to the route
+  it will also add park to Park on route list (to style icon differently and still have park buttons)
+   */
   const addParkToRoute = (latitude, longitude, name, code) => {
     setNewRoutePoints([
       ...newRoutePoints,
@@ -73,11 +91,23 @@ function MapMarker({
     setParkOnRoute((parks) => [...parks, code]);
   };
 
-  //removing park from the waypoints and list of all parks on route
+  /*
+    if user is in the 'create route mode' this function will be called to remove park to the route
+    it will also remove park to Park on route list (to style icon differently and still have park buttons)
+   */
+
   const removeParkFromRoute = (code) => {
     setNewRoutePoints(newRoutePoints.filter((point) => point[4] !== code));
     setParkOnRoute((parks) => parks.filter((park) => park !== code));
   };
+
+  /* 
+  styling the park icon differently if the park is in the user's route
+  helps not only to display different color of the makrer (orange)
+  but also to keep the buttons to display Park Details, mark as Visited.
+  Includes Remove From route button
+  */
+
   if (parkOnRoute.includes(park.code)) {
     return (
       <Marker
@@ -138,6 +168,7 @@ function MapMarker({
     );
   }
 
+  // if the park is not part of the user's route
   return (
     <Marker
       icon={park.visited ? greenIcon : blueIcon}

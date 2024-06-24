@@ -50,9 +50,12 @@ export function editRoute(username, routeId, routeNotes, routeDetails) {
         routeNotes,
         routeDetails
       );
-      return dispatch(fetchRoutesFromAPI(username));
+
+      await dispatch(fetchRoutesFromAPI(username));
+      return { msg: "Route saved", status: "success" };
     } catch (e) {
       console.log(e);
+      return { msg: `Route not saved ${e}`, status: "error" };
     }
   };
 }

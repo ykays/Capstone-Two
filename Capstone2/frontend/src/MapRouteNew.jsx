@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Marker, Popup, useMap, Tooltip, useMapEvents } from "react-leaflet";
+import { Marker, Popup, useMapEvents } from "react-leaflet";
 import Button from "@mui/material/Button";
 import L from "leaflet";
 import { createControlComponent } from "@react-leaflet/core";
 import "leaflet-routing-machine";
 
+/*
+  The Component to listen to user clicks on the map while creating the route
+  and displaying the route on the map
+*/
 function MapRouteNew({
   setNewRoutePoints,
   newRoutePoints,
@@ -19,7 +23,7 @@ function MapRouteNew({
     setPoints(newRoutePoints);
   }, [newRoutePoints, setNewRoutePoints]);
 
-  // if the user clicked on Add a Waypoint button, allow user to click and add waypoint
+  // if the user clicked on Add a Waypoint button, allow user to click on the map to a add waypoint
   const map = useMapEvents({
     click(e) {
       addOnMap

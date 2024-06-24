@@ -13,18 +13,25 @@ import Alert from "@mui/material/Alert";
 
 const defaultTheme = createTheme();
 function SignIn({ open, onClose, logInUser }) {
+  //initial state for login form
   const initialState = {
     username: "",
     password: "",
   };
+
+  //login form state
   const [formData, setFormData] = useState(initialState);
+
+  //alert messages to be displayed once the user tries to login
   const [msg, setMsg] = useState([]);
 
+  //function to handle the form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((form) => ({ ...form, [name]: value }));
   };
 
+  //function to login user (calls function from App component)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await logInUser(formData);

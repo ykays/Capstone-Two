@@ -13,6 +13,7 @@ import Alert from "@mui/material/Alert";
 
 const defaultTheme = createTheme();
 function Register({ open, onClose, registerUser }) {
+  //initila state for register form
   const initialState = {
     username: "",
     password: "",
@@ -20,14 +21,20 @@ function Register({ open, onClose, registerUser }) {
     firstName: "",
     lastName: "",
   };
+
+  //register form state
   const [formData, setFormData] = useState(initialState);
+
+  //alert messages to be displayed once the user tries to register
   const [msg, setMsg] = useState([]);
 
+  //function to handle the register form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((form) => ({ ...form, [name]: value }));
   };
 
+  //function to register user (calls function from App component)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await registerUser(formData);

@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { fetchRoutesFromAPI } from "./actions/routes";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { TextField } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ParkApi from "./api";
-import Tooltip from "@mui/material/Tooltip";
-import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import { List, ListItem, ListItemButton } from "@mui/material";
 import RouteDetails from "./RouteDetails";
 import { deleteRoute } from "./actions/routes";
 
@@ -31,6 +25,15 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
+/*
+  The Component to display the user's routes list
+  It retrieves all the routes user saved from redux
+  and updates the list if user deletes the route
+
+  At the beginning it only displays 'My Routes' button,
+  once the user clicks on it, the drawer with the list of all routes will open
+
+*/
 function RoutesList({
   user,
   setNewRoutePoints,

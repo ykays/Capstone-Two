@@ -213,5 +213,72 @@ test("Deleting Route", async () => {
   await act(async () => await new Promise(process.nextTick));
 
   expect(screen.getByText("My Route 1")).toBeInTheDocument();
+  expect(screen.queryByText("My Route 2")).not.toBeInTheDocument();
   expect(screen.queryAllByLabelText("Waypoint")).toHaveLength(0);
+});
+
+test("Editing Route", async () => {
+  const user = {
+    username: "testUser",
+    email: "testUser@gmail.com",
+    firstName: "Test",
+    lastName: "User",
+  };
+
+  const store = configureStore({ reducer: root });
+  store.dispatch({ type: "FETCH_USER", user: user });
+
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+  await act(async () => await new Promise(process.nextTick));
+
+  act(() => {
+    fireEvent.click(screen.getByText(/My Routes/i));
+  });
+  await act(async () => await new Promise(process.nextTick));
+
+  act(() => {
+    fireEvent.click(screen.getByText(/My Route 2/i));
+  });
+
+  act(() => {
+    fireEvent.click(screen.getByTestId("ShowRoute2"));
+  });
+  const listItems = screen.getAllByRole("listitem");
+  expect(listItems).toHaveLength(2);
+  expect(
+    screen.getByDisplayValue(/Ice Age National Scenic Trail/i)
+  ).toBeInTheDocument();
+  expect(
+    screen.getByDisplayValue("Herbert Hoover National Historic Site")
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("button", { name: "Save Changes" })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("button", { name: "Delete Route" })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("button", { name: "Google Maps" })
+  ).toBeInTheDocument();
+
+  act(() => {
+    fireEvent.click(screen.getByAltText("acad"));
+  });
+  act(() => {
+    fireEvent.click(screen.getByText("Add to Route"));
+  });
+
+  act(() => {
+    fireEvent.click(screen.getByRole("button", { name: "Save Changes" }));
+  });
+  await act(async () => await new Promise(process.nextTick));
+
+  expect(screen.getByText("My Route 2")).toBeInTheDocument();
+  expect(screen.getByDisplayValue(/Acadia National Park/i)).toBeInTheDocument();
+  expect(screen.getByRole("alert")).toBeInTheDocument();
+  expect(screen.getByRole("alert")).toHaveTextContent("Route saved");
 });

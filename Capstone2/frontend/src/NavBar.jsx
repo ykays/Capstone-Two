@@ -9,6 +9,9 @@ import SignIn from "./SignIn";
 import Register from "./Register";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
+/*
+  NavBar Component to diplay App Name, Login, Register and Logout functionalities
+*/
 function NavBar({ registerUser, logInUser, logOutUser }) {
   const user = useSelector((store) => store.user, shallowEqual);
   const [login, setLogin] = useState(false);
