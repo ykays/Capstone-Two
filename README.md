@@ -19,37 +19,60 @@ The technology stack used to create this app:
 
 ## Installation
 
-###Back End:###
+### Back End:
 
 1. Clone locally the repository:
-   > git clone git@github.com:ykays/Capstone-Two.git
+   ```
+   git clone git@github.com:ykays/Capstone-Two.git
+   ```
 2. Change Directory to backend & install requirements:
-   > cd backend
-   > npm install
-3. Create new DB locally: createdb parks
+   ```
+   cd backend
+   npm install
+   ```
+3. Create new DB locally:
+   ```
+   createdb parks
+   ```
 4. Run files to create and populate tables in this order:
-   1. > psql < parks.sql
+   ```
+   psql < parks.sql
+   ```
    - parks.sql will create a new parks and parks_test db;
    - will create new set of tables
    - will run a seed file
-   2. > node parksSeedApi.js
-      - this file will call National Park (NPS) API to get the parks and parks activities and then populate the tables
+   ```
+   node parksSeedApi.js
+   ```
+   - this file will call National Park (NPS) API to get the parks and parks activities and then populate the tables
 5. To start server (server runs at http://localhost:3001):
-   > nodemon server.js
+   ```
+   nodemon server.js
+   ```
 6. To run tests:
-   > jest
+   ```
+   jest
+   ```
 
-###Front End:###
+### Front End:
 
 1. Change Directory to Front End:
-   > cd ..
-   > cd frontend
+   ```
+   cd ..
+   cd frontend
+   ```
 2. Install requirements:
-   > npm install
+   ```
+   npm install
+   ```
 3. To start frontend (server runs at http://localhost:5173/):
-   > npm run dev
+   ```
+   npm run dev
+   ```
 4. To run tests:
-   > npm run test
+   ```
+   npm run test
+   ```
 5. To get your own NPS API Key (free of charge): https://www.nps.gov/subjects/developer/get-started.htm
 
 Projects Docs: contains DB schema, React Front End Components schema, initial project idea and project proposal.
