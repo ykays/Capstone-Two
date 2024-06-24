@@ -1,12 +1,3 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
 **Pin The Park App!**
 
 _The App where a user can view all the US parks on the map and create the routes to visit them_
@@ -26,26 +17,25 @@ The technology stack used to create this app:
 - Redux
 - Render
 
-# Installation (TODO!!)
+# Installation
 
-1. Clone locally the repository: git clone git@github.com:ykays/Capstone_Project_One.git
+1. Clone locally the repository: git clone git@github.com:ykays/Capstone-Two.git
 2. Install requirements:
    - backend: TODO!
    - frontend:
 3. Create new DB locally: createdb parks
-4. Replace the DB URI with parks in .env: DATABASE = ‘postgresql://grocery_db' TODO!
-5. Run files to create and populate tables in this order:
+4. Run files to create and populate tables in this order:
    1. psql < parks.sql
-      ( - parks.sql will create a new parks and parks_test db;
+   - parks.sql will create a new parks and parks_test db;
    - will create new set of tables
-   - will run a seed file)
+   - will run a seed file
    2. node parksSeedApi.js
-      (this file will call National Park (NPS) API to get the parks and parks activities and then populate the tables)
-6. To start server: nodemon server.js
-7. To start frontend:
-8. To run tests:
+      - this file will call National Park (NPS) API to get the parks and parks activities and then populate the tables
+5. To start server (server runs at http://localhost:3001): nodemon server.js
+6. To start frontend (server runs at http://localhost:5173/): npm run dev
+7. To run tests:
    - backend: jest
    - frontend: npm run test
-9. To get your own NPS API Key (free of charge):
+8. To get your own NPS API Key (free of charge): https://www.nps.gov/subjects/developer/get-started.htm
 
 Projects Docs: contains DB schema, React Front End Components schema, initial project idea and project proposal.
