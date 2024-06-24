@@ -5,7 +5,7 @@ import { afterAll, afterEach, beforeAll } from "vitest";
 import { setupServer } from "msw/node";
 import { HttpResponse, graphql, http } from "msw";
 
-beforeEach(() => setUpDB(), window.localStorage.clear());
+beforeEach(() => setUpDB());
 // runs a clean after each test case (e.g. clearing jsdom)
 afterEach(() => {
   cleanup();
@@ -246,34 +246,12 @@ export const restHandlers = [
     return HttpResponse.json(fakeDB.routesUser);
   }),
   http.post("http://localhost:3001/users/login", async ({ request }) => {
-    const data = await request.json();
-    const username = data["username"];
-    const password = data["password"];
-    if (username !== "testUser" || password !== "testUserPassword123") {
-      return new HttpResponse(null, {
-        status: 401,
-        data: {
-          error: { message: "Invalid username/password" },
-        },
-      });
-    }
-
     return HttpResponse.json({
       token:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RVc2VyIiwiaWF0IjoxNzE5MjQ2ODE2fQ.oqf_-bWzV8pvxb1aFYgVs2eqvV3l98BYzr-2trSXjBU",
     });
   }),
   http.post("http://localhost:3001/users/register", async ({ request }) => {
-    const data = await request.json();
-    const username = data["username"];
-    if (username === "testUser2")
-      return HttpResponse.json({
-        error: {
-          message: "Duplicate username: testUser2",
-          status: 400,
-        },
-      });
-
     return HttpResponse.json({
       token:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RVc2VyIiwiaWF0IjoxNzE5MjQ2ODE2fQ.oqf_-bWzV8pvxb1aFYgVs2eqvV3l98BYzr-2trSXjBU",

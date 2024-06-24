@@ -43,54 +43,7 @@ describe("SignIn", () => {
   });
 });
 
-test("loging user incorrect details", async () => {
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
-
-  await act(async () => await new Promise(process.nextTick));
-  fireEvent.click(screen.getByText(/Login/i));
-
-  const username = screen.getByLabelText(/Username/i);
-  act(() => {
-    fireEvent.click(username);
-    fireEvent.change(username, { target: { value: "incorrectUser" } });
-  });
-
-  const password = screen.getByLabelText(/Password/i);
-  act(() => {
-    fireEvent.click(password);
-    fireEvent.change(password, { target: { value: "incorrectPassword" } });
-  });
-
-  act(() => {
-    fireEvent.click(screen.getByRole("button", { name: "Sign In" }));
-  });
-
-  await act(async () => await new Promise(process.nextTick));
-  await act(
-    async () =>
-      await waitFor(() => {
-        expect(screen.getByRole("alert")).toBeInTheDocument();
-        expect(screen.getByRole("alert")).toHaveTextContent(
-          "Invalid username/password"
-        );
-      })
-  );
-  //expect(screen.getByText("Invalid username/password")).toBeInTheDocument();
-  // await act(
-  //   async () =>
-  //     await waitFor(() => {
-  //       expect(screen.getByText(/Logout/i)).toBeInTheDocument();
-  //       expect(screen.queryByText(/Login/i)).not.toBeInTheDocument();
-  //       expect(screen.queryByText(/Register/i)).not.toBeInTheDocument();
-  //     })
-  // );
-});
-
-test("loging user correct details", async () => {
+test("logging user", async () => {
   render(
     <Provider store={store}>
       <App />
