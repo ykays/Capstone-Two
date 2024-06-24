@@ -15,8 +15,6 @@ class ParksApi {
     try {
       return (await axios({ url, method, data, params, headers })).data;
     } catch (err) {
-      console.log(err);
-      console.log(err.response.data);
       console.error("API Error:", err.response);
       const message = err.response.data.error.message;
       throw Array.isArray(message) ? message : [message];
