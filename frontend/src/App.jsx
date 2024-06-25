@@ -32,7 +32,6 @@ function App() {
       setToken(userToken.token);
       return { success: true };
     } catch (err) {
-      console.log(err, "LUAAAERRORAPP");
       return { success: false, err };
     }
   }
