@@ -1,5 +1,5 @@
 # Pin The Park App! 
-## (https://pinthepark.onrender.com/)
+#### https://pinthepark.onrender.com/
 
 _The App where a user can view all the US parks on the map and create the routes to visit them_
 
