@@ -1,4 +1,4 @@
-# Pin The Park App!
+# Pin The Park App! (https://pinthepark.onrender.com/)
 
 _The App where a user can view all the US parks on the map and create the routes to visit them_
 
@@ -75,4 +75,5 @@ The technology stack used to create this app:
    ```
 5. To get your own NPS API Key (free of charge): https://www.nps.gov/subjects/developer/get-started.htm
 
-Projects Docs: contains DB schema, React Front End Components schema, initial project idea and project proposal.
+Projects Docs: contains DB schema, React Front End Components schema.
+
